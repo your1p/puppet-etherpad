@@ -56,11 +56,21 @@ class etherpad (
     fail("database_type must be either 'dirty', 'mysql', 'sqlite', or 'postgres'")
   }
 
+  if $manage_user {
+    contain '::etherpad::user'
+
+    Class['etherpad::user'] ->
+    Class['etherpad::install']
+  }
+
   contain '::etherpad::install'
   contain '::etherpad::config'
   contain '::etherpad::service'
 
-  Class['etherpadd::install'] ->
-  Class['etherpadd::config'] ~>
+  Class['etherpad::install'] ->
+  Class['etherpad::config'] ~>
+  Class['etherpad::service']
+
+  Class['etherpadd::install'] ~>
   Class['etherpadd::service']
 }
