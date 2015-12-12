@@ -18,7 +18,7 @@ class etherpad::install {
     }
   }
 
-  if $manage_abiword {
+  if $::etherpad::manage_abiword {
     package { 'abiword':
       ensure => $abiword_ensure,
     }
@@ -26,8 +26,10 @@ class etherpad::install {
 
   vcsrepo { $::etherpad::root_dir:
     ensure   => $vcs_ensure,
+    provider => 'git',
     owner    => $::etherpad::user,
     group    => $::etherpad::group,
+    source   => $::etherpad::source,
     revision => $vcs_revision,
   }
 
