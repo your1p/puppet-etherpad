@@ -2,7 +2,7 @@
 #
 # This class is called from etherpad for creating the user.
 #
-class etherpad::install {
+class etherpad::user {
 
   # ensure correct ordering in case of deinstallation
 
