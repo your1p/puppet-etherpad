@@ -21,6 +21,7 @@ class etherpad::install {
   if $manage_abiword {
     package { 'abiword':
       ensure => $abiword_ensure,
+    }
   }
 
   vcsrepo { $::etherpad::root_dir:
