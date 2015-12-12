@@ -71,6 +71,6 @@ class etherpad (
   Class['etherpad::config'] ~>
   Class['etherpad::service']
 
-  Class['etherpadd::install'] ~>
-  Class['etherpadd::service']
+  Class['etherpad::install'] ~>
+  Class['etherpad::service']
 }
