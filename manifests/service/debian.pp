@@ -1,0 +1,2 @@
+class etherpad::service::debian {
+}

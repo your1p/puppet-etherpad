@@ -9,9 +9,13 @@ class etherpad (
   String  $ensure         = 'present', # This should be a pattern, but right now that's too long
   String  $service_name   = 'etherpad',
   String  $service_ensure = 'running', # again, should be an enum…
+  # what if the fact doesn't exist (yet) or is b0rked? use Optional.
+  Optional[String]  $service_provider = $::service_provider,
   Boolean $manage_user    = true,
-  Boolean $manage_abiword = true,
+  Boolean $manage_abiword = false,
   String  $abiword_path   = '/usr/bin/abiword',
+  Boolean $manage_tidy    = false,
+  String  $tidy_path      = '/usr/bin/tidy',
   String  $user           = 'etherpad',
   String  $group          = 'etherpad',
   String  $root_dir       = '/opt/etherpad',
@@ -26,7 +30,7 @@ class etherpad (
 
   # Network
   String           $ip          = '*',
-  String           $port        = '9001',
+  Integer          $port        = 9001,
   Optional[String] $trust_proxy = undef,
 
   # Performance
@@ -34,15 +38,17 @@ class etherpad (
   Boolean $minify  = true,
 
   # Config
+  Boolean $require_session        = false,
   Boolean $edit_only              = false,
   Boolean $require_authentication = false,
   Boolean $require_authorization  = false,
-  Optional[String]  $comment      = undef,
+  Optional[String]  $pad_title    = undef,
   String  $default_pad_text       = 'Welcome to etherpad!',
   String  $session_key            = fqdn_rand_string(30),
 ) {
 
   validate_absolute_path($abiword_path)
+  validate_absolute_path($tidy_path)
   validate_absolute_path($root_dir)
 
   unless $ensure =~

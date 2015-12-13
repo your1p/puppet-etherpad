@@ -29,16 +29,19 @@ describe 'etherpad' do
         context "etherpad class with all parameters set" do
           let(:params) do
             {
-              :ensure         => 'present',
-              :service_name   => 'etherpad',
-              :service_ensure => 'running',
-              :manage_user    => true,
-              :manage_abiword => true,
-              :abiword_path   => '/usr/bin/abiword',
-              :user           => 'etherpad',
-              :group          => 'etherpad',
-              :root_dir       => '/opt/etherpad',
-              :source         => 'https://github.com/ether/etherpad-lite.git',
+              :ensure           => 'present',
+              :service_name     => 'etherpad',
+              :service_ensure   => 'running',
+              :service_provider => facts[:service_provider],
+              :manage_user      => true,
+              :manage_abiword   => false,
+              :abiword_path     => '/usr/bin/abiword',
+              :manage_tidy      => false,
+              :tidy_path        => '/usr/bin/tidy',
+              :user             => 'etherpad',
+              :group            => 'etherpad',
+              :root_dir         => '/opt/etherpad',
+              :source           => 'https://github.com/ether/etherpad-lite.git',
 
               # Db
               :database_type     => 'dirty',
@@ -49,7 +52,7 @@ describe 'etherpad' do
 
               # Network
               :ip          => '*',
-              :port        => '9001',
+              :port        => 9001,
               :trust_proxy => :undef,
 
               # Performance
@@ -57,10 +60,11 @@ describe 'etherpad' do
               :minify  => true,
 
               # Config
+              :require_session        => false,
               :edit_only              => false,
               :require_authentication => false,
               :require_authorization  => false,
-              :comment                => :undef,
+              :pad_title              => :undef,
               :default_pad_text       => 'Welcome to etherpad!',
               :session_key            => 'some string',
             }
