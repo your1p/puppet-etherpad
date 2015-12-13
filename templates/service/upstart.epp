@@ -1,0 +1,16 @@
+# etherpad-lite - run etherpad-lite
+#
+
+description     "Etherpad lite"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+
+setuid <%= $etherpad::user -%>
+setgid <%= $etherpad::group -%>
+
+chrdir <%= $etherpad::root_dir -%>
+
+exec bin/run.sh

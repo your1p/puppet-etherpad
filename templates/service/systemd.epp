@@ -1,0 +1,9 @@
+[Unit]
+Description="Etherpad lite"
+
+[Service]
+User=<%= $etherpad::user -%>
+Group=<%= $etherpad::group -%>
+
+WorkingDirectory=<%= $etherpad::root_dir -%>
+ExecStart=bin/run.sh
