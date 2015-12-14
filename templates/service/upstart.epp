@@ -8,9 +8,9 @@ stop on runlevel [!2345]
 
 respawn
 
-setuid <%= $etherpad::user -%>
-setgid <%= $etherpad::group -%>
+setuid <%= $etherpad::user %>
+setgid <%= $etherpad::group %>
 
-chrdir <%= $etherpad::root_dir -%>
+chrdir <%= $etherpad::root_dir %>
 
-exec bin/run.sh
+exec <%= $etherpad::root_dir -%>/bin/run.sh

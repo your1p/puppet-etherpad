@@ -2,8 +2,8 @@
 Description="Etherpad lite"
 
 [Service]
-User=<%= $etherpad::user -%>
-Group=<%= $etherpad::group -%>
+User=<%= $etherpad::user %>
+Group=<%= $etherpad::group %>
 
-WorkingDirectory=<%= $etherpad::root_dir -%>
-ExecStart=bin/run.sh
+WorkingDirectory=<%= $etherpad::root_dir %>
+ExecStart=<%= $etherpad::root_dir -%>/bin/run.sh 
