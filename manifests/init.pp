@@ -29,7 +29,7 @@ class etherpad (
   String  $database_password = 'etherpad',
 
   # Network
-  String           $ip          = '*',
+  Optional[String] $ip          = undef,
   Integer          $port        = 9001,
   Optional[String] $trust_proxy = undef,
 
