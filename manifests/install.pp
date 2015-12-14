@@ -4,15 +4,14 @@
 #
 class etherpad::install {
 
-
   case $::etherpad::ensure {
     'present', 'absent', 'latest': {
-      $abiword_ensure = $::etherpad::ensure
+      $deps_ensure    = $::etherpad::ensure
       $vcs_ensure     = $::etherpad::ensure
-      $vcs_revision   = 'master'
+      $vcs_revision   = 'develop' # master doesn't currently "work" with node 4, 5
     }
     default: {
-      $abiword_ensure = 'present'
+      $deps_ensure    = 'present'
       $vcs_ensure     = 'present'
       $vcs_revision   = $::etherpad::ensure
     }
@@ -20,7 +19,12 @@ class etherpad::install {
 
   if $::etherpad::manage_abiword {
     package { 'abiword':
-      ensure => $abiword_ensure,
+      ensure => $deps_ensure,
+    }
+  }
+  if $::etherpad::manage_tidy {
+    package { 'tidy':
+      ensure => $deps_ensure,
     }
   }
 
