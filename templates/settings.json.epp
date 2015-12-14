@@ -44,14 +44,14 @@
   //the database specific settings
   <%- if $etherpad::database_type == 'dirty' or $etherpad::database_type == 'sqlite' { -%>
   "dbSettings" : {
-                    "filename" : "var/<%= $etherpad::database_type -%>.db"
+                     "filename" : "var/<%= $etherpad::database_type -%>.db"
                  },
   <%- } else { -%>
    "dbSettings" : {
-                    "user"    : "<%= $etherpad::database_user -%>",
-                    "host"    : "<%= $etherpad::database_host -%>",
-                    "password": "<%= $etherpad::database_password -%>",
-                    "database": "<%= $etherpad::database_name -%>"
+                     "user"    : "<%= $etherpad::database_user -%>",
+                     "host"    : "<%= $etherpad::database_host -%>",
+                     "password": "<%= $etherpad::database_password -%>",
+                     "database": "<%= $etherpad::database_name -%>"
                   },
   <%- } -%>
 
@@ -80,7 +80,7 @@
   "requireSession" : <%= $etherpad::require_session -%>,
 
   /* Users may edit pads but not create new ones. Pad creation is only via the API. This applies both to group pads and regular pads. */
-  "editOnly" : <%= $etherpad::edit_only -%>alse,
+  "editOnly" : <%= $etherpad::edit_only -%>,
 
   /* Users, who have a valid session, automatically get granted access to password protected pads */
   "sessionNoPassword" : false,
@@ -98,7 +98,7 @@
   <%- if $etherpad::manage_abiword { -%>
   "abiword" : "<%= $etherpad::abiword_path -%>",
   <%- } else { -%>
-  "abiword" : null
+  "abiword" : null,
   <%- } -%>
 
   /* This is the path to the Tidy executable. Setting it to null, disables Tidy.
