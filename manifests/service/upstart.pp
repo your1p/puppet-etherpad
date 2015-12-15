@@ -1,5 +1,5 @@
 # create service definition for etherpad for upstart
-class etherpad::seervice::upstart {
+class etherpad::service::upstart {
 
   file { '/etc/init/etherpad.conf':
     ensure  => 'file',
