@@ -122,11 +122,7 @@
   "requireAuthorization" : <%= $etherpad::require_authentication -%>,
 
   /*when you use NginX or another proxy/ load-balancer set this to true*/
-  <%- if $etherpad::trust_proxy { -%>
-  "trustProxy" : "<%= $etherpad::trust_proxy -%>",
-  <%- } else { -%>
-  "trustProxy" : false,
-  <%- } -%>
+  "trustProxy" : <%= $etherpad::trust_proxy -%>,
 
   /* Privacy: disable IP logging */
   "disableIPlogging" : false,

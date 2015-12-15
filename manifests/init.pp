@@ -31,7 +31,7 @@ class etherpad (
   # Network
   Optional[String] $ip          = undef,
   Integer          $port        = 9001,
-  Optional[String] $trust_proxy = undef,
+  Boolean          $trust_proxy = false,
 
   # Performance
   Integer $max_age = 21600,
@@ -44,7 +44,6 @@ class etherpad (
   Boolean $require_authorization  = false,
   Optional[String]  $pad_title    = undef,
   String  $default_pad_text       = 'Welcome to etherpad!',
-  String  $session_key            = fqdn_rand_string(30),
 ) {
 
   validate_absolute_path($abiword_path)

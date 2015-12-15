@@ -142,7 +142,7 @@ Whether to manage the dependency of the tidy package.
 |-----|--------|
 |Boolean|`false`|
 
-#### abiword__path
+#### abiword_path
 
 Absolute Path to the abiword binary.
 
@@ -175,33 +175,149 @@ URL to the git source of etherpad.
 |-----|--------|
 |String|'https://github.com/ether/etherpad-lite.git'|
 
-  String  $database_type     = 'dirty',
-  String  $database_host     = 'localhost',
-  String  $database_user     = 'etherpad',
-  String  $database_name     = 'etherpad',
-  String  $database_password = 'etherpad',
+#### database_type
 
-  # Network
-  Optional[String] $ip          = undef,
-  Integer          $port        = 9001,
-  Optional[String] $trust_proxy = undef,
+The type of database that etherpad should use. In case of `mysql` or `postgres`, you'll also have to set the options below.
 
-  # Performance
-  Integer $max_age = 21600,
-  Boolean $minify  = true,
+|Type |Default |
+|-----|--------|
+|Enum['dirty', 'mysql', 'sqlite', 'postgres']|'dirty'|
 
-  # Config
-  Boolean $require_session        = false,
-  Boolean $edit_only              = false,
-  Boolean $require_authentication = false,
-  Boolean $require_authorization  = false,
-  Optional[String]  $pad_title    = undef,
-  String  $default_pad_text       = 'Welcome to etherpad!',
-  String  $session_key            = fqdn_rand_string(30),
+#### database_host
+
+Host on which the database is running.
+
+|Type |Default |
+|-----|--------|
+|String|`localhost`|
+
+#### database_user
+
+User (or role) to use, when connecting to the database.
+ 
+|Type |Default |
+|-----|--------|
+|String|`etherpad`|
+
+#### database_name
+
+Name of database to connect to.
+ 
+|Type |Default |
+|-----|--------|
+|String|`etherpad`|
+
+
+#### database_password
+
+Password to use when connecting to database.
+ 
+|Type |Default |
+|-----|--------|
+|String|`etherpad`|
+
+
+#### ip
+
+IP on which etherpad will be listening. The default, `undef`, turns into
+`null`, and hence NodeJS' default of "all interfaces".
+
+|Type |Default |
+|-----|--------|
+|String|`undef`|
+
+#### port
+
+Port on which etherpad will be listening.
+
+|Type |Default |
+|-----|--------|
+|Integer|`9001`|
+
+#### trust_proxy
+
+This value should be set if etherpad is running behind a proxy.
+
+|Type |Default |
+|-----|--------|
+|Boolean|`false`|
+
+#### max_age
+
+How long clients may use served JavaScript code (in seconds).
+
+|Type |Default |
+|-----|--------|
+|Integer|21600|
+
+#### minify
+
+Whether to minify the delivered JavaScript and CSS.
+
+
+|Type |Default |
+|-----|--------|
+|Boolean|`true`|
+
+
+#### require_session
+
+Users must have a session to access pads. This effectively allows
+only group pads to be accessed.
+
+|Type |Default |
+|-----|--------|
+|Boolean|`false`|
+
+#### edit_only
+
+Users may edit pads but not create new ones. Pad creation is only
+via the API. This applies both to group pads and regular pads.
+
+|Type |Default |
+|-----|--------|
+|Boolean|`false`|
+
+#### require_authentication
+
+This setting is used if you require authentication of all users.
+
+Note: `/admin` always requires authentication.
+
+|Type |Default |
+|-----|--------|
+|Boolean|`false`|
+
+#### require_authorization
+
+Require authorization by a module, or a user with is_admin set,
+see below.
+
+|Type |Default |
+|-----|--------|
+|Boolean|`false`|
+
+#### pad_title
+
+Name of your instance
+
+|Type |Default |
+|-----|--------|
+|Optional[String]|`undef`|
+
+#### default_pad_text
+
+The default text of a pad.
+
+|Type |Default |
+|-----|--------|
+|String|`Welcome to etherpad!`|
+
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+Currently, only upstart and systemd are supported as Service
+providers. More support is highly welcomed.
 
 ## Development
 
