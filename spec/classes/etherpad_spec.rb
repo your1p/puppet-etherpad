@@ -53,7 +53,7 @@ describe 'etherpad' do
               # Network
               :ip          => '*',
               :port        => 9001,
-              :trust_proxy => :undef,
+              :trust_proxy => false,
 
               # Performance
               :max_age => 21600,
@@ -66,7 +66,6 @@ describe 'etherpad' do
               :require_authorization  => false,
               :pad_title              => :undef,
               :default_pad_text       => 'Welcome to etherpad!',
-              :session_key            => 'some string',
             }
           end
 
