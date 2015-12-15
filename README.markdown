@@ -24,6 +24,8 @@ It's inspired by existing etherpad modules on the Forge, but attempts to "*do it
 * This module depends on [puppet-nodejs](https://forge.puppetlabs.com/puppet/nodejs)
 * It also depends on [puppetlabs-vcsrepo](https://forge.puppetlabs.com/puppetlabs/vcsrepo), and hence git
 * It will setup a service using the system's preferred init
+* When running installDeps.sh, this module requires all the usual build tools,
+  development packages and headers as any other (complex) npm install
 
 ### Setup Requirements
 
@@ -126,13 +128,13 @@ Whether to manage the dependency of the abiword package.
 |-----|--------|
 |Boolean|`false`|
 
-#### abiword__path
+#### abiword_path
 
 Absolute Path to the abiword binary.
 
 |Type |Default |
 |-----|--------|
-|String|'/usr/bin/abiword'|
+|String|`/usr/bin/abiword`|
 
 #### manage_tidy
 
@@ -148,7 +150,7 @@ Absolute Path to the abiword binary.
 
 |Type |Default |
 |-----|--------|
-|String|'/usr/bin/abiword'|
+|String|`/usr/bin/abiword`|
 
 #### user & group
 
@@ -156,7 +158,7 @@ The user and group under which etherpad will be running.
 
 |Type |Default |
 |-----|--------|
-|String|'etherpad'|
+|String|`etherpad`|
 
 #### root_dir
 
@@ -164,7 +166,7 @@ Absolute Path of the etherpad installation.
 
 |Type |Default |
 |-----|--------|
-|String|'/opt/etherpad'|
+|String|`/opt/etherpad`|
 
 
 #### source
@@ -181,7 +183,7 @@ The type of database that etherpad should use. In case of `mysql` or `postgres`,
 
 |Type |Default |
 |-----|--------|
-|Enum['dirty', 'mysql', 'sqlite', 'postgres']|'dirty'|
+|Enum[`dirty`, `mysql`, `sqlite`, `postgres`]|`dirty`|
 
 #### database_host
 
@@ -321,8 +323,4 @@ providers. More support is highly welcomed.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+Please see CONTRIBUTING.md for how to contribute patches!
