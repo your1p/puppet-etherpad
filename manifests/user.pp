@@ -25,6 +25,7 @@ class etherpad::user {
     ensure  => $user_ensure,
     gid     => $::etherpad::group,
     home    => $::etherpad::root_dir,
+    shell   => '/usr/sbin/nologin',
     system  => true,
     require => $user_require,
   }
