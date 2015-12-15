@@ -1,12 +1,12 @@
 {
-  "name": "brainsware-etherpad",
-  "version": "0.1.0",
-  "author": "brainsware",
+  "name": "puppet-etherpad",
+  "version": "1.0.0",
+  "author": "puppetcommunity",
   "summary": "Install and configure Etherpad",
   "license": "Apache-2.0",
-  "source": "https://gitlab.com/brainsware-infra/puppet-etherpad",
-  "project_page": "https://gitlab.com/brainsware-infra/puppet-etherpad",
-  "issues_url": "https://gitlab.com/brainsware-infra/puppet-etherpad/issues",
+  "source": "https://github.com/puppet-community/puppet-etherpad",
+  "project_page": "https://github.com/puppet-community/puppet-etherpad",
+  "issues_url": "https://github.com/puppet-community/puppet-etherpad/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
