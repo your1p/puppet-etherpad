@@ -6,7 +6,7 @@ will likely make it into a release a little quicker.
 
 Please note that this project is released with a Contributor Code of Conduct.
 By participating in this project you agree to abide by its terms. [Contributor
-Code of Conduct](https://github.com/puppet-community/code-of-conduct).
+Code of Conduct](https://voxpupuli.org/coc/).
 
 1. Fork the repo.
 
