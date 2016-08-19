@@ -56,7 +56,7 @@ describe 'etherpad' do
               trust_proxy: false,
 
               # Performance
-              max_age: 21600,
+              max_age: 21_600,
               minify: true,
 
               # Config
