@@ -8,7 +8,7 @@ describe 'etherpad' do
           facts
         end
 
-        context "etherpad class without any parameters" do
+        context 'etherpad class without any parameters' do
           it { is_expected.to compile.with_all_deps }
 
           it { is_expected.to contain_vcsrepo('/opt/etherpad') }
@@ -26,7 +26,7 @@ describe 'etherpad' do
           facts
         end
 
-        context "etherpad class with all parameters set" do
+        context 'etherpad class with all parameters set' do
           let(:params) do
             {
               ensure: 'present',
