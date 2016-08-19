@@ -65,7 +65,7 @@ describe 'etherpad' do
               require_authentication: false,
               require_authorization: false,
               pad_title: :undef,
-              default_pad_text: 'Welcome to etherpad!',
+              default_pad_text: 'Welcome to etherpad!'
             }
           end
 
