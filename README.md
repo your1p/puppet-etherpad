@@ -1,3 +1,5 @@
+# Etherpad module for Puppet
+
 #### Table of Contents
 
 1. [Overview](#overview)
@@ -13,27 +15,26 @@
 
 ## Overview
 
-This module installs and configures etherpad(-lite).
-It's inspired by existing etherpad modules on the Forge, but attempts to "*do it right™*".
-
+This module installs and configures etherpad(-lite). It's inspired by existing
+etherpad modules on the Forge, but attempts to "*do it right™*".
 
 ## Setup
 
 ### What etherpad affects
 
 * This module depends on [puppet-nodejs](https://forge.puppetlabs.com/puppet/nodejs)
-* It also depends on [puppetlabs-vcsrepo](https://forge.puppetlabs.com/puppetlabs/vcsrepo), and hence git
+* It also depends on [puppetlabs-vcsrepo](https://forge.puppetlabs.com/puppetlabs/vcsrepo),
+  and hence git
 * It will setup a service using the system's preferred init
 * When running installDeps.sh, this module requires all the usual build tools,
   development packages and headers as any other (complex) npm install
 
 ### Setup Requirements
 
-This module requires a database. With no database available, it will use the fallback dirtydb.
-dirtydb is not intended for production use.
+This module requires a database. With no database available, it will use
+DirtyDB as fallback. This is not intended for production use.
 
-For a migration from DirtyDB, please consult [this blog
-post](https://codeborne.com/2011/10/19/etherpad-lite-migrate-data-from-dirtydb.html)
+For a migration from DirtyDB, please consult [this blog post](https://codeborne.com/2011/10/19/etherpad-lite-migrate-data-from-dirtydb.html)
 
 ### Beginning with etherpad
 
@@ -100,7 +101,6 @@ Ensure whether the service is running or stopped. If you're passing `absent` to
 |-----|--------|
 | Enum['running', 'stopped'] | `running` |
 
-
 #### service_provider
 
 Which [service provider](https://docs.puppetlabs.com/references/latest/type.html#service-providers)
@@ -110,7 +110,6 @@ Currently only `upstart` and `systemd` are supported!
 |Type |Default |
 |-----|--------|
 | Optional[String] | `$::service_provider` |
-
 
 #### manage_user
 
@@ -168,7 +167,6 @@ Absolute Path of the etherpad installation.
 |-----|--------|
 |String|`/opt/etherpad`|
 
-
 #### source
 
 URL to the git source of etherpad.
@@ -179,7 +177,8 @@ URL to the git source of etherpad.
 
 #### database_type
 
-The type of database that etherpad should use. In case of `mysql` or `postgres`, you'll also have to set the options below.
+The type of database that etherpad should use. In case of `mysql` or `postgres`,
+you'll also have to set the options below.
 
 |Type |Default |
 |-----|--------|
@@ -196,7 +195,7 @@ Host on which the database is running.
 #### database_user
 
 User (or role) to use, when connecting to the database.
- 
+
 |Type |Default |
 |-----|--------|
 |String|`etherpad`|
@@ -204,20 +203,18 @@ User (or role) to use, when connecting to the database.
 #### database_name
 
 Name of database to connect to.
- 
+
 |Type |Default |
 |-----|--------|
 |String|`etherpad`|
-
 
 #### database_password
 
 Password to use when connecting to database.
- 
+
 |Type |Default |
 |-----|--------|
 |String|`etherpad`|
-
 
 #### ip
 
@@ -256,11 +253,9 @@ How long clients may use served JavaScript code (in seconds).
 
 Whether to minify the delivered JavaScript and CSS.
 
-
 |Type |Default |
 |-----|--------|
 |Boolean|`true`|
-
 
 #### require_session
 
@@ -314,7 +309,6 @@ The default text of a pad.
 |Type |Default |
 |-----|--------|
 |String|`Welcome to etherpad!`|
-
 
 ## Limitations
 
