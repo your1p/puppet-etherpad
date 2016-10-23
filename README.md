@@ -1,5 +1,12 @@
 # Etherpad module for Puppet
 
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-etherpad.png?branch=master)](https://travis-ci.org/voxpupuli/puppet-etherpad)
+[![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-etherpad/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-etherpad)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/etherpad.svg)](https://forge.puppetlabs.com/puppet/etherpad)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/etherpad.svg)](https://forge.puppetlabs.com/puppet/etherpad)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/etherpad.svg)](https://forge.puppetlabs.com/puppet/etherpad)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/etherpad.svg)](https://forge.puppetlabs.com/puppet/etherpad)
+
 #### Table of Contents
 
 1. [Overview](#overview)
