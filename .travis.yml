@@ -28,13 +28,11 @@ matrix:
   - rvm: 2.4.0-preview1
     env: PUPPET_VERSION="~> 4.0" CHECK=test
   allow_failures:
-    - rvm: 2.4.0-preview1
+    - rvm: 2.4.0-preview3
 notifications:
   email: false
 deploy:
   provider: puppetforge
-  deploy:
-    branch: ha-bug-puppet-forge
   user: puppet
   password:
     secure: "W7d5wAO5nMMwnLIIMI79ZYxH8Cq3lbpcxnUIB66W4Q7bOLqAPlOHGQyspcAgaAvImpJmZMlk9PrPjXVppeIIrmrgxf5nG1HqzDoFqQIsFX21FgB6KgFLbwGtEL6bqX8g+mijHSH2lKB/YvWfonAzDwz0CERDTO1AchiPMSOoZxg/MJbmLmkZJd0yfTvvTOeYeXk+CnSb02alHN/a7QxgKDvWuateNF2X73j9Be7NDdtOF8Pf00dFpUEKlhgN3M6SUwoyJjbAvKzQsPCsASICq/6TnFOKQ/E8asIDcN9Qrz4uVsDTp7zqx+IhBqdnJb06iLrcC88160819frV/Z+FqE+ADBNhGmNtl0ApAaRoMNuA74Z1miUV4xfuctYWJ8E5Piq+kldmQpp2gVLn2ybARp78+unv7P7CFXeke3rcthSYixirZOSQxz5ForYcjXQ0UrUoSxeaKnQEqpWRjlG1ScQJ/22H5AjI7bBarfJ1LHUefo4kx8kZrybipcWJ+dCogmGvqK73uq1Ca0u6D5kV+fFO5LQ88jKObRxmmWNKhkxGJ7/LPaRkTsvcYhKoLflOVpA8lw2lz2R1hQ5503sjCl7Oke7JYUdjeTnUes+lz1J9zWRWzPs+ohTznUKSb+mGV1O3k3ngg8lVdpVxCSRunP0jkASoJUSaUdv7AzNef50="
