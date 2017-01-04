@@ -11,6 +11,6 @@ respawn
 setuid <%= $etherpad::user %>
 setgid <%= $etherpad::group %>
 
-chrdir <%= $etherpad::root_dir %>
+chdir <%= $etherpad::root_dir %>
 
 exec <%= $etherpad::root_dir -%>/bin/run.sh
