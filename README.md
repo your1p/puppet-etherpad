@@ -65,7 +65,7 @@ For production setups, use:
 ```puppet
 class { ::etherpad:
   ensure            => 'present',
-  database_provider => 'mysql',
+  database_type     => 'mysql',
   database_name     => 'etherpad',
   database_user     => 'etherpad',
   database_password => '37h3rp4d',
