@@ -119,7 +119,7 @@
   "requireAuthentication" : <%= $etherpad::require_authentication -%>,
 
   /* Require authorization by a module, or a user with is_admin set, see below. */
-  "requireAuthorization" : <%= $etherpad::require_authentication -%>,
+  "requireAuthorization" : <%= $etherpad::require_authorization -%>,
 
   /*when you use NginX or another proxy/ load-balancer set this to true*/
   "trustProxy" : <%= $etherpad::trust_proxy -%>,
