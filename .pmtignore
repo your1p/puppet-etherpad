@@ -1,12 +1,1 @@
-.*.sw?
-.bundle/
-.rspec_system/
-.vagrant/
-.yardoc
-Gemfile.lock
-coverage/
-junit/
-log/
-pkg/
-spec/fixtures/
-vendor/
+docs/
