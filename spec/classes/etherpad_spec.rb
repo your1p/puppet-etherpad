@@ -10,10 +10,10 @@ describe 'etherpad' do
 
         context 'etherpad class without any parameters' do
           it { is_expected.to compile.with_all_deps }
-
           it { is_expected.to contain_vcsrepo('/opt/etherpad') }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json') }
           it { is_expected.to contain_file('/lib/systemd/system/etherpad.service') }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"users": {$|) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{ldapauth}) }
           it { is_expected.to contain_service('etherpad') }
           it { is_expected.to contain_user('etherpad') }
           it { is_expected.to contain_group('etherpad') }
@@ -27,6 +27,29 @@ describe 'etherpad' do
       context "on #{os}" do
         let(:facts) do
           facts
+        end
+
+        context 'etherpad class with ldapauth set' do
+          let(:params) do
+            {
+              ldapauth: {
+                'url'         => 'ldap://ldap.foobar.com',
+                'accountBase' => 'o=staff,o=foo,dc=bar,dc=com'
+              },
+              users: {
+                'test_user' => {
+                  'password' => 's3cr3t',
+                  'is_admin' => true
+                }
+              }
+            }
+          end
+
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"users": {$|) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"ldapauth": {$|) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"accountBase": "o=staff,o=foo,dc=bar,dc=com",$}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{test_user}) }
         end
 
         context 'etherpad class with all parameters set' do
@@ -63,6 +86,9 @@ describe 'etherpad' do
               minify: true,
 
               # Config
+              ldapauth: {
+                'url' => 'ldap://ldap.foobar.com'
+              },
               require_session: false,
               edit_only: false,
               require_authentication: false,

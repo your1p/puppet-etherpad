@@ -311,6 +311,16 @@ see below.
 |-----|--------|
 |Boolean|`false`|
 
+#### ldapauth
+
+The setting should be used to set ep_ldapauth module params as described in
+https://github.com/tykeal/ep_ldapauth
+If both 'users' and 'ldapauth' are set only the latter one will be put into settings.json.
+
+|Type |Default |
+|-----|--------|
+|Optional[Hash]|`undef`|
+
 #### pad_title
 
 Name of your instance
@@ -369,7 +379,7 @@ Only log a specific category.
 
 #### users
 
-Configure users in settings.json.
+Configure users in settings.json. If both 'users' and 'ldapauth' are set only the latter one will be put into settings.json.
 
 |Type |Default |
 |-----|--------|
