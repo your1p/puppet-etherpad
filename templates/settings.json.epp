@@ -86,7 +86,7 @@
 
   /* if true, all css & js will be minified before sending to the client. This will improve the loading performance massivly,
      but makes it impossible to debug the javascript/css */
-  "minify" : <%= $etherpad::edit_only -%>,
+  "minify" : <%= $etherpad::minify -%>,
 
   /* How long may clients use served javascript code (in seconds)? Without versioning this
      may cause problems during deployment. Set to 0 to disable caching */
