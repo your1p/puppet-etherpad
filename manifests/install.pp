@@ -17,6 +17,14 @@ class etherpad::install {
     }
   }
 
+  if $::etherpad::logconfig_file {
+    file { $::etherpad::logconfig_file_filename:
+      ensure => file,
+      owner  => $::etherpad::user,
+      group  => $::etherpad::group,
+    }
+  }
+
   if $::etherpad::manage_abiword {
     package { 'abiword':
       ensure => $deps_ensure,

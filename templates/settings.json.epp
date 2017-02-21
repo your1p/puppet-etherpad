@@ -129,6 +129,16 @@
 
   /* Users for basic authentication. is_admin = true gives access to /admin.
      If you do not uncomment this, /admin will not be available! */
+  <%- if $etherpad::users { -%>
+  "users": {
+    <%- $etherpad::users.each |String $username, Hash $attrs| { -%>
+    "<%= $username -%>": {
+      "password": "<%= $attrs['password'] -%>",
+      "is_admin": "<%= $attrs['is_admin'] -%>"
+    },
+    <%- } -%>
+  },
+  <%- } else { -%>
   /*
   "users": {
     "admin": {
@@ -141,6 +151,7 @@
     }
   },
   */
+  <%- } -%>
 
   // restrict socket.io transport methods
   "socketTransportProtocols" : ["xhr-polling", "jsonp-polling", "htmlfile"],
@@ -183,13 +194,26 @@
         { "type": "console"
         //, "category": "access"// only logs pad access
         }
+        <%- if $etherpad::logconfig_file { -%>
+      , { "type": "file"
+        , "filename": "<%= $etherpad::logconfig_file_filename %>"
+        , "maxLogSize": <%= $etherpad::logconfig_file_max_log_size %>
+        , "backups": <%= $etherpad::logconfig_file_backups %> // how many log files there're gonna be at max
+            <%- if $etherpad::logconfig_file_category { -%>
+        , "category": "<%= $etherpad::logconfig_file_category %>" // only log a specific category
+            <%- } else { -%>
+        //, "category": "test" // only log a specific category
+          <%- } -%>
+        }
+        <%- } else { -%>
     /*
       , { "type": "file"
-      , "filename": "your-log-file-here.log"
-      , "maxLogSize": 1024
-      , "backups": 3 // how many log files there're gonna be at max
-      //, "category": "test" // only log a specific category
+        , "filename": "your-log-file-here.log"
+        , "maxLogSize": 1024
+        , "backups": 3 // how many log files there're gonna be at max
+        //, "category": "test" // only log a specific category
         }*/
+        <%- } -%>
     /*
       , { "type": "logLevelFilter"
         , "level": "warn" // filters out all log messages that have a lower level than "error"

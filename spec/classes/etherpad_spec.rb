@@ -13,7 +13,10 @@ describe 'etherpad' do
 
           it { is_expected.to contain_vcsrepo('/opt/etherpad') }
           it { is_expected.to contain_file('/opt/etherpad/settings.json') }
+          it { is_expected.to contain_file('/lib/systemd/system/etherpad.service') }
           it { is_expected.to contain_service('etherpad') }
+          it { is_expected.to contain_user('etherpad') }
+          it { is_expected.to contain_group('etherpad') }
         end
       end
     end
@@ -65,11 +68,32 @@ describe 'etherpad' do
               require_authentication: false,
               require_authorization: false,
               pad_title: :undef,
-              default_pad_text: 'Welcome to etherpad!'
+              default_pad_text: 'Welcome to etherpad!',
+
+              # Users
+              'users' => {
+                'admin' => {
+                  'password' => 's3cr3t',
+                  'is_admin' => true
+                },
+                'user' => {
+                  'password' => 'secret',
+                  'is_admin' => false
+                }
+              },
+
+              # Logging
+              logconfig_file: true,
+              logconfig_file_filename: '/var/log/etherpad.log',
+              logconfig_file_max_log_size: 1024,
+              logconfig_file_backups: 3,
+              logconfig_file_category: 'etherpad'
+
             }
           end
 
           it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_file('/var/log/etherpad.log') }
         end
       end
     end

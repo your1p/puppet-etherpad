@@ -69,6 +69,16 @@ class { ::etherpad:
   database_name     => 'etherpad',
   database_user     => 'etherpad',
   database_password => '37h3rp4d',
+  users             => {
+    admin => {
+      password => 's3cr3t',
+      is_admin => true,
+    },
+    user  => {
+      password => 'secret',
+      is_admin => false,
+    },
+  },
 }
 ```
 
@@ -316,6 +326,54 @@ The default text of a pad.
 |Type |Default |
 |-----|--------|
 |String|`Welcome to etherpad!`|
+
+#### logconfig_file
+
+Enable/disable logging to a file.
+
+|Type |Default |
+|-----|--------|
+|Boolean|`false`|
+
+#### logconfig_file_filename
+
+Specify the file to log to, if logconfig_file is enabled.
+
+|Type |Default |
+|-----|--------|
+|Optional[String]|`undef`|
+
+#### logconfig_file_max_log_size
+
+The maximum logfile size (megabytes) before rotating the log file.
+
+|Type |Default |
+|-----|--------|
+|Optional[Integer]|`undef`|
+
+#### logconfig_file_backups
+
+The number of logfiles to keep after rotation.
+
+|Type |Default |
+|-----|--------|
+|Optional[Integer]|`undef`|
+
+#### logconfig_file_category
+
+Only log a specific category.
+
+|Type |Default |
+|-----|--------|
+|Optional[String]|`undef`|
+
+#### users
+
+Configure users in settings.json.
+
+|Type |Default |
+|-----|--------|
+|Optional[Hash]|`undef`|
 
 ## Limitations
 

@@ -44,6 +44,16 @@ class etherpad (
   Boolean $require_authorization  = false,
   Optional[String]  $pad_title    = undef,
   String  $default_pad_text       = 'Welcome to etherpad!',
+
+  # Users
+  Optional[Hash]    $users        = undef,
+
+  # Logging
+  Boolean           $logconfig_file               = false,
+  Optional[String]  $logconfig_file_filename      = undef,
+  Optional[Integer] $logconfig_file_max_log_size  = undef,
+  Optional[Integer] $logconfig_file_backups       = undef,
+  Optional[String]  $logconfig_file_category      = undef,
 ) {
 
   validate_absolute_path($abiword_path)
