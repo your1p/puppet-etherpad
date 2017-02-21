@@ -65,7 +65,7 @@ For production setups, use:
 ```puppet
 class { ::etherpad:
   ensure            => 'present',
-  database_provider => 'mysql',
+  database_type     => 'mysql',
   database_name     => 'etherpad',
   database_user     => 'etherpad',
   database_password => '37h3rp4d',
@@ -324,4 +324,4 @@ providers. More support is highly welcomed.
 
 ## Development
 
-Please see CONTRIBUTING.md for how to contribute patches!
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute patches!
