@@ -86,7 +86,7 @@
 
   /* if true, all css & js will be minified before sending to the client. This will improve the loading performance massivly,
      but makes it impossible to debug the javascript/css */
-  "minify" : <%= $etherpad::edit_only -%>,
+  "minify" : <%= $etherpad::minify -%>,
 
   /* How long may clients use served javascript code (in seconds)? Without versioning this
      may cause problems during deployment. Set to 0 to disable caching */
@@ -127,9 +127,18 @@
   /* Privacy: disable IP logging */
   "disableIPlogging" : false,
 
+  <%- if $etherpad::ldapauth =~ Hash[String, String, 1] { -%>
+  /* Optional configuration for ldapauth module. */
+  "users": {
+    "ldapauth": {
+      <%- $etherpad::ldapauth.each |$option, $value| { -%>
+      "<%= $option %>": "<%= $value %>",
+      <%- } -%>
+    }
+  },
   /* Users for basic authentication. is_admin = true gives access to /admin.
      If you do not uncomment this, /admin will not be available! */
-  <%- if $etherpad::users { -%>
+  <%- } elsif $etherpad::users { -%>
   "users": {
     <%- $etherpad::users.each |String $username, Hash $attrs| { -%>
     "<%= $username -%>": {

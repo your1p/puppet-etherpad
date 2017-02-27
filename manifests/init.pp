@@ -38,6 +38,7 @@ class etherpad (
   Boolean $minify  = true,
 
   # Config
+  Optional[Hash] $ldapauth        = undef,
   Boolean $require_session        = false,
   Boolean $edit_only              = false,
   Boolean $require_authentication = false,
