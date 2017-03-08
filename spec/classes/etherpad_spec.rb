@@ -14,6 +14,7 @@ describe 'etherpad' do
           it { is_expected.to contain_file('/lib/systemd/system/etherpad.service') }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"users": {$|) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{ldapauth}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{ep_button_link}) }
           it { is_expected.to contain_service('etherpad') }
           it { is_expected.to contain_user('etherpad') }
           it { is_expected.to contain_group('etherpad') }
@@ -54,6 +55,23 @@ describe 'etherpad' do
           it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{test_user}) }
         end
 
+        context 'etherpad class with button_link set' do
+          let(:params) do
+            {
+              button_link: {
+                'text'   => 'Link Button',
+                'link'   => 'http://example.com/pad-lister',
+                'before' => "li[data-key='showTimeSlider']"
+              }
+            }
+          end
+
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"ep_button_link": {$|) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"text": "Link Button",$}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"link": "http://example\.com/pad-lister",$}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"before": "li\[data-key='showTimeSlider'\]"$}) }
+        end
+
         context 'etherpad class with all parameters set' do
           let(:params) do
             {
@@ -88,6 +106,11 @@ describe 'etherpad' do
               minify: true,
 
               # Config
+              button_link: {
+                'text'   => 'Link Button',
+                'link'   => 'http://example.com/pad-lister',
+                'before' => "li[data-key='showTimeSlider']"
+              },
               ldapauth: {
                 'url'                => 'ldap://ldap.foobar.com',
                 'groupAttributeIsDN' => true

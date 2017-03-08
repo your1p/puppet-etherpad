@@ -39,6 +39,7 @@ class etherpad (
 
   # Config
   Optional[Hash] $ldapauth        = undef,
+  Optional[Hash] $button_link     = undef,
   Boolean $require_session        = false,
   Boolean $edit_only              = false,
   Boolean $require_authentication = false,
