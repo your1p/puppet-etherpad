@@ -127,12 +127,16 @@
   /* Privacy: disable IP logging */
   "disableIPlogging" : false,
 
-  <%- if $etherpad::ldapauth =~ Hash[String, String, 1] { -%>
+  <%- if $etherpad::ldapauth =~ Hash[String, Variant[String,Boolean], 1] { -%>
   /* Optional configuration for ldapauth module. */
   "users": {
     "ldapauth": {
       <%- $etherpad::ldapauth.each |$option, $value| { -%>
+      <%- if $value =~ Boolean { -%>
+      "<%= $option %>": <%= $value %>,
+      <%- } else { -%>
       "<%= $option %>": "<%= $value %>",
+      <%- } -%>
       <%- } -%>
     }
   },

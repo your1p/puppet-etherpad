@@ -33,8 +33,9 @@ describe 'etherpad' do
           let(:params) do
             {
               ldapauth: {
-                'url'         => 'ldap://ldap.foobar.com',
-                'accountBase' => 'o=staff,o=foo,dc=bar,dc=com'
+                'url'                => 'ldap://ldap.foobar.com',
+                'accountBase'        => 'o=staff,o=foo,dc=bar,dc=com',
+                'groupAttributeIsDN' => false
               },
               users: {
                 'test_user' => {
@@ -49,6 +50,7 @@ describe 'etherpad' do
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"ldapauth": {$|) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"accountBase": "o=staff,o=foo,dc=bar,dc=com",$}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"groupAttributeIsDN": false,$}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{test_user}) }
         end
 
@@ -87,7 +89,8 @@ describe 'etherpad' do
 
               # Config
               ldapauth: {
-                'url' => 'ldap://ldap.foobar.com'
+                'url'                => 'ldap://ldap.foobar.com',
+                'groupAttributeIsDN' => true
               },
               require_session: false,
               edit_only: false,
