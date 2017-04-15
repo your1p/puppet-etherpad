@@ -311,6 +311,15 @@ see below.
 |-----|--------|
 |Boolean|`false`|
 
+#### button_link
+
+The setting should be used to set ep_button_link module params as described at
+https://github.com/JohnMcLear/ep_button_link
+
+|Type |Default |
+|-----|--------|
+|Optional[Hash]|`undef`|
+
 #### ldapauth
 
 The setting should be used to set ep_ldapauth module params as described in
