@@ -51,8 +51,8 @@ class etherpad::install {
       group    => $::etherpad::group,
       source   => $::etherpad::source,
       revision => $vcs_revision,
-    } ~>
-    exec { "${::etherpad::root_dir}/bin/installDeps.sh":
+    }
+    ~> exec { "${::etherpad::root_dir}/bin/installDeps.sh":
       user        => $::etherpad::user,
       group       => $::etherpad::group,
       cwd         => $::etherpad::root_dir,

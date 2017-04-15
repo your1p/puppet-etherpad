@@ -75,18 +75,18 @@ class etherpad (
   if $manage_user {
     contain '::etherpad::user'
 
-    Class['etherpad::user'] ->
-    Class['etherpad::install']
+    Class['etherpad::user']
+    -> Class['etherpad::install']
   }
 
   contain '::etherpad::install'
   contain '::etherpad::config'
   contain '::etherpad::service'
 
-  Class['etherpad::install'] ->
-  Class['etherpad::config'] ~>
-  Class['etherpad::service']
+  Class['etherpad::install']
+  -> Class['etherpad::config']
+  ~> Class['etherpad::service']
 
-  Class['etherpad::install'] ~>
-  Class['etherpad::service']
+  Class['etherpad::install']
+  ~> Class['etherpad::service']
 }
