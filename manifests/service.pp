@@ -19,8 +19,8 @@ class etherpad::service {
   }
 
   unless $::etherpad::ensure == 'absent' {
-    Class["::etherpad::service::${svc_provider}"] ->
-    Service[$::etherpad::service_name]
+    Class["::etherpad::service::${svc_provider}"]
+    -> Service[$::etherpad::service_name]
   }
 
 }
