@@ -1,3 +1,30 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+Each new release typically also includes the latest modulesync defaults.
+These should not affect the functionality of the module.
+
+## [v2.0.0](https://github.com/voxpupuli/puppet-etherpad/tree/v2.0.0) (2017-11-17)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-etherpad/compare/v1.1.0...v2.0.0)
+
+**Implemented enhancements:**
+
+- Support for ep\_button\_link module options. Fix for ep\_ldapauth boolean options [\#23](https://github.com/voxpupuli/puppet-etherpad/pull/23) ([sergiik](https://github.com/sergiik))
+- Add support for managing etherpad users and logfile location [\#18](https://github.com/voxpupuli/puppet-etherpad/pull/18) ([grigarr](https://github.com/grigarr))
+
+**Fixed bugs:**
+
+- Add option to install settings for ep\_ldapauth plugin [\#17](https://github.com/voxpupuli/puppet-etherpad/pull/17) ([sergiik](https://github.com/sergiik))
+- Fixes to upstart init script and documentation [\#14](https://github.com/voxpupuli/puppet-etherpad/pull/14) ([mattock](https://github.com/mattock))
+
+**Merged pull requests:**
+
+- bump puppet version dependency to \>= 4.7.1 \< 6.0.0 [\#31](https://github.com/voxpupuli/puppet-etherpad/pull/31) ([bastelfreak](https://github.com/bastelfreak))
+- replace validate\_\* with datatypes [\#28](https://github.com/voxpupuli/puppet-etherpad/pull/28) ([bastelfreak](https://github.com/bastelfreak))
+- Add init.d script for 'debian' service\_provider [\#26](https://github.com/voxpupuli/puppet-etherpad/pull/26) ([sergiik](https://github.com/sergiik))
+- release 1.1.0 [\#21](https://github.com/voxpupuli/puppet-etherpad/pull/21) ([bastelfreak](https://github.com/bastelfreak))
+
 # Change log
 
 All notable changes to this project will be documented in this file.
@@ -16,6 +43,7 @@ These should not impact the functionality of the module.
 **Merged pull requests:**
 
 - Modulesync 0.12.2 & Release 1.0.0 [\#2](https://github.com/voxpupuli/puppet-etherpad/pull/2) ([bastelfreak](https://github.com/bastelfreak))
+
 
 
 
