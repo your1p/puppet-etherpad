@@ -22,20 +22,17 @@
   <%- } -%>
   "port" : <%= $etherpad::port -%>,
 
-  /*
   // Node native SSL support
-  // this is disabled by default
-  //
   // make sure to have the minimum and correct file access permissions set
   // so that the Etherpad server can access them
-
+  <%- if $etherpad::ssl == 'enable' { -%>
   "ssl" : {
-            "key"  : "/path-to-your/epl-server.key",
-            "cert" : "/path-to-your/epl-server.crt",
-            "ca": ["/path-to-your/epl-intermediate-cert1.crt", "/path-to-your/epl-intermediate-cert2.crt"]
+          "key"  : "<%= $etherpad::ssl_key -%>",
+          "cert" : "<%= $etherpad::ssl_cert -%>"
           },
-
-  */
+  <%- } else { -%>
+  // SSL module is not enable by default
+  <%-  } -%>
 
   //The Type of the database. You can choose between dirty, postgres, sqlite and mysql
   //You shouldn't use "dirty" for for anything else than testing or development
