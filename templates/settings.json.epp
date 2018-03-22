@@ -31,7 +31,7 @@
           "cert" : "<%= $etherpad::ssl_cert -%>"
           },
   <%- } else { -%>
-  // SSL module is not enable by default
+  // SSL module is not enabled by default
   <%-  } -%>
 
   //The Type of the database. You can choose between dirty, postgres, sqlite and mysql
