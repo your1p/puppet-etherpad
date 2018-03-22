@@ -50,6 +50,11 @@ class etherpad (
   # Users
   Optional[Hash] $users = undef,
 
+  # Ssl
+  Enum['enable','disable'] $ssl  = 'disable',
+  Stdlib::Absolutepath $ssl_key  = '/etc/ssl/epad/epl-server.key',
+  Stdlib::Absolutepath $ssl_cert = '/etc/ssl/epad/epl-server.crt',
+
   # Logging
   Boolean $logconfig_file                        = false,
   Optional[String] $logconfig_file_filename      = undef,
