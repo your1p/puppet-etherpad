@@ -15,7 +15,7 @@ describe 'etherpad' do
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"users": {$|) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{ldapauth}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{ep_button_link}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(/^"ssl" :/) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{\"ssl" :}) }
           it { is_expected.to contain_service('etherpad') }
           it { is_expected.to contain_user('etherpad') }
           it { is_expected.to contain_group('etherpad') }
@@ -32,7 +32,7 @@ describe 'etherpad' do
         end
 
         context 'etherpad class with button_link set and ssl enabled' do
-          let (:params) do
+          let(:params) do
             {
               button_link: {
                 'text'   => 'Link Button',
@@ -45,13 +45,14 @@ describe 'etherpad' do
               ssl_cert: '/yourpath/etherpad.crt'
             }
           end
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(/\"ssl\" : /) }
+
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"ssl\" :}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(/^\s*"ep_button_link": {$/) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(/^\s*"text": "Link Button",$/) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"ep_button_link": {$|) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"text": "Link Button",$}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"link": "https://example\.com/pad-lister",$}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(/^\s*"before": "li\[data-key='showTimeSlider'\]"$/) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"before": "li\[data-key='showTimeSlider'\]"$}) }
         end
       end
     end
@@ -100,7 +101,7 @@ describe 'etherpad' do
             }
           end
 
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"ep_button_link": {$|) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r/^\s*"ep_button_link": {$/) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"text": "Link Button",$}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"link": "http://example\.com/pad-lister",$}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"before": "li\[data-key='showTimeSlider'\]"$}) }
@@ -183,7 +184,7 @@ describe 'etherpad' do
             }
           end
 
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(/\"ssl\" : /) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"ssl\" :}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
           it { is_expected.to compile.with_all_deps }
@@ -267,7 +268,7 @@ describe 'etherpad' do
             }
           end
 
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(/\"ssl\" : /) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{\"ssl\" :}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
           it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
           it { is_expected.to compile.with_all_deps }
