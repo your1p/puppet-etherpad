@@ -79,6 +79,10 @@ class { ::etherpad:
       is_admin => false,
     },
   },
+  padoptions => {
+    nocolors => 'false',
+    lang     => 'en-gb',
+  },
 }
 ```
 
@@ -393,6 +397,14 @@ Configure users in settings.json. If both 'users' and 'ldapauth' are set only th
 |Type |Default |
 |-----|--------|
 |Optional[Hash]|`undef`|
+
+#### padoptions
+
+Configure pad behaviors in settings.json.
+
+|Type |Default |
+|-----|--------|
+|Optional[Hash[Enum[`nocolors`,`showcontrols`,`showchat`,`showlinenumbers`,`usermonospace`,`username`,`usercolor`,`rtl`,`alwaysshowchat`,`chatandusers`,`lang`]]]|`undef`|
 
 ## Limitations
 

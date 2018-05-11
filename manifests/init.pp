@@ -61,7 +61,33 @@ class etherpad (
   Optional[Integer] $logconfig_file_max_log_size = undef,
   Optional[Integer] $logconfig_file_backups      = undef,
   Optional[String] $logconfig_file_category      = undef,
-) {
+
+  # Padoptions
+  #Optional[Hash[String[0],String[1]]] $padoptions = undef,
+  Optional[Hash[Enum['nocolors',
+  'showcontrols',
+  'showchat',
+  'showlinenumbers',
+  'usemonospacefont',
+  'username',
+  'usercolor',
+  'rtl',
+  'alwaysshowchat',
+  'chatandusers',
+  'lang'
+  ], String]] $padoptions = undef,
+) inherits ::etherpad::params {
+  #Merged values provides by user and default values
+  if $padoptions {
+    $_tmp_padoptions = $etherpad::params::default_padoptions.map | String $_key, String $_value | {
+      { "${_key}" => $etherpad::padoptions["${_key}"] ? { String => $etherpad::padoptions["${_key}"], default => $_value, } }
+    }
+    $_real_padoptions = $_tmp_padoptions.reduce({}) | $memo, Hash $option | {
+      merge( $memo , $option )
+    }
+  } else {
+    $_real_padoptions = $etherpad::params::default_padoptions
+  }
 
   if $manage_user {
     contain '::etherpad::user'
