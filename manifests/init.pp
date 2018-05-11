@@ -63,7 +63,6 @@ class etherpad (
   Optional[String] $logconfig_file_category      = undef,
 
   # Padoptions
-  #Optional[Hash[String[0],String[1]]] $padoptions = undef,
   Optional[Hash[Enum['nocolors',
   'showcontrols',
   'showchat',
@@ -74,21 +73,16 @@ class etherpad (
   'rtl',
   'alwaysshowchat',
   'chatandusers',
-  'lang'
+  'lang',
   ], String]] $padoptions = undef,
 ) inherits ::etherpad::params {
   #Merged values provides by user and default values
   if $padoptions {
-    $_tmp_padoptions = $etherpad::params::default_padoptions.map | String $_key, String $_value | {
-      { "${_key}" => $etherpad::padoptions["${_key}"] ? { String => $etherpad::padoptions["${_key}"], default => $_value, } }
-    }
-    $_real_padoptions = $_tmp_padoptions.reduce({}) | $memo, Hash $option | {
-      merge( $memo , $option )
-    }
+    $_real_padoptions = merge($etherpad::params::default_padoptions, $etherpad::padoptions)
   } else {
     $_real_padoptions = $etherpad::params::default_padoptions
   }
-
+notice("final hash : $_real_padoptions")
   if $manage_user {
     contain '::etherpad::user'
 
