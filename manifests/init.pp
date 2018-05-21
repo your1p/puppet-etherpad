@@ -71,7 +71,7 @@ class etherpad (
   } else {
     $_real_padoptions = $etherpad::params::default_padoptions
   }
-notice("final hash : $_real_padoptions")
+
   if $manage_user {
     contain '::etherpad::user'
 
