@@ -63,18 +63,19 @@ class etherpad (
   Optional[String] $logconfig_file_category      = undef,
 
   # Padoptions
-  Optional[Hash[Enum['nocolors',
-  'showcontrols',
-  'showchat',
-  'showlinenumbers',
-  'usemonospacefont',
-  'username',
-  'usercolor',
-  'rtl',
-  'alwaysshowchat',
-  'chatandusers',
-  'lang',
-  ], String]] $padoptions = undef,
+# Hash[Enum['nocolors',
+# 'showcontrols',
+# 'showchat',
+# 'showlinenumbers',
+# 'usemonospacefont',
+# 'username',
+# 'usercolor',
+# 'rtl',
+# 'alwaysshowchat',
+# 'chatandusers',
+# 'lang',
+# ], String] $padoptions = undef,
+  Optional[Etherpad::Stpadoptions] $padoptions = undef,
 ) inherits ::etherpad::params {
   #Merged values provides by user and default values
   if $padoptions {
