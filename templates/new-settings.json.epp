@@ -1,0 +1,10 @@
+/*
+  THIS FILE IS UNDER PUPPET CONTROL
+
+  This file must be valid JSON. But comments are allowed
+
+  Please edit settings.json, not settings.json.template
+
+  To still commit settings without credentials you can 
+  store any credential settings in credentials.json
+*/

@@ -1,5 +1,5 @@
 # Matches Pad Options Keys And Values
-type Etherpad::Stpadoptions = Struct[
+type Etherpad::Padoptions = Struct[
   {
     Optional['nocolors']         => String[1],
     Optional['showcontrols']     => String[1],
