@@ -1,9 +1,11 @@
 /*
+  THIS FILE IS UNDER PUPPET CONTROL
+
   This file must be valid JSON. But comments are allowed
 
   Please edit settings.json, not settings.json.template
 
-  To still commit settings without credentials you can 
+  To still commit settings without credentials you can
   store any credential settings in credentials.json
 */
 {
@@ -54,19 +56,19 @@
   //the default text of a pad
   "defaultPadText" : "<%= $etherpad::default_pad_text -%>",
 
-  /* Default Pad behavior, users can override by changing */
+  //Pad behavior
   "padOptions": {
-    "noColors": false,
-    "showControls": true,
-    "showChat": true,
-    "showLineNumbers": true,
-    "useMonospaceFont": false,
-    "userName": false,
-    "userColor": false,
-    "rtl": false,
-    "alwaysShowChat": false,
-    "chatAndUsers": false,
-    "lang": "en-gb"
+    "noColors": <%= $etherpad::_real_padoptions['nocolors'] -%>,
+    "showControls": <%= $etherpad::_real_padoptions['showcontrols'] -%>,
+    "showChat": <%= $etherpad::_real_padoptions['showchat'] -%>,
+    "showLineNumbers": <%= $etherpad::_real_padoptions['showlinenumbers'] -%>,
+    "useMonospaceFont": <%= $etherpad::_real_padoptions['usemonospacefont'] -%>,
+    "userName": <%= $etherpad::_real_padoptions['username'] -%>,
+    "userColor": <%= $etherpad::_real_padoptions['usercolor'] -%>,
+    "rtl": <%= $etherpad::_real_padoptions['rtl'] -%>,
+    "alwaysShowChat": <%= $etherpad::_real_padoptions['alwaysshowchat'] -%>,
+    "chatAndUsers": <%= $etherpad::_real_padoptions['chatandusers'] -%>,
+    "lang": "<%= $etherpad::_real_padoptions['lang'] -%>"
   },
 
   /* Should we suppress errors from being visible in the default Pad Text? */

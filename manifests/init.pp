@@ -61,7 +61,16 @@ class etherpad (
   Optional[Integer] $logconfig_file_max_log_size = undef,
   Optional[Integer] $logconfig_file_backups      = undef,
   Optional[String] $logconfig_file_category      = undef,
-) {
+
+  # Padoptions
+  Etherpad::Stpadoptions $padoptions = {},
+) inherits ::etherpad::params {
+  #Merged values provides by user and default values
+  if $padoptions {
+    $_real_padoptions = merge($etherpad::params::default_padoptions, $etherpad::padoptions)
+  } else {
+    $_real_padoptions = $etherpad::params::default_padoptions
+  }
 
   if $manage_user {
     contain '::etherpad::user'
