@@ -64,9 +64,24 @@ class etherpad (
 
   # Padoptions
   Etherpad::Stpadoptions $padoptions = {},
-) inherits ::etherpad::params {
+
+) {
+  #Default parameters for padoptions
+  $default_padoptions = {
+    noColors         => false,
+    showControls     => true,
+    showChat         => true,
+    showLineNumbers  => true,
+    useMonospaceFont => false,
+    userName         => false,
+    userColor        => false,
+    rtl              => false,
+    alwaysShowChat   => false,
+    chatAndUsers     => false,
+    lang             => 'en-gb',
+  }
   #Merged values provides by user and default values
-    $_real_padoptions = merge($etherpad::params::default_padoptions, $etherpad::padoptions)
+    $_real_padoptions = merge($etherpad::default_padoptions, $etherpad::padoptions)
 
   if $manage_user {
     contain '::etherpad::user'

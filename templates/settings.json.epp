@@ -57,19 +57,7 @@
   "defaultPadText" : "<%= $etherpad::default_pad_text -%>",
 
   //Pad behavior
-  "padOptions": {
-    "noColors": <%= $etherpad::_real_padoptions['nocolors'] -%>,
-    "showControls": <%= $etherpad::_real_padoptions['showcontrols'] -%>,
-    "showChat": <%= $etherpad::_real_padoptions['showchat'] -%>,
-    "showLineNumbers": <%= $etherpad::_real_padoptions['showlinenumbers'] -%>,
-    "useMonospaceFont": <%= $etherpad::_real_padoptions['usemonospacefont'] -%>,
-    "userName": <%= $etherpad::_real_padoptions['username'] -%>,
-    "userColor": <%= $etherpad::_real_padoptions['usercolor'] -%>,
-    "rtl": <%= $etherpad::_real_padoptions['rtl'] -%>,
-    "alwaysShowChat": <%= $etherpad::_real_padoptions['alwaysshowchat'] -%>,
-    "chatAndUsers": <%= $etherpad::_real_padoptions['chatandusers'] -%>,
-    "lang": "<%= $etherpad::_real_padoptions['lang'] -%>"
-  },
+  "padOptions": <%= to_json_pretty($etherpad::_real_padoptions) %>,
 
   /* Should we suppress errors from being visible in the default Pad Text? */
   "suppressErrorsInPadText" : false,
