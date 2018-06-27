@@ -111,16 +111,16 @@ describe 'etherpad' do
           let(:params) do
             {
               'padoptions' => {
-                'noColors' => 'true',
+                'noColors' => true,
                 'lang'     => 'fr'
               }
 
             }
           end
 
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"padOptions\":}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"noColors\": true,}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"lang\": \"fr\"}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"padOptions\":}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"noColors\": true,}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"lang\": \"fr\"}) }
         end
 
         context 'etherpad class with bad users pad options set' do
