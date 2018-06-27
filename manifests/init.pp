@@ -66,11 +66,7 @@ class etherpad (
   Etherpad::Stpadoptions $padoptions = {},
 ) inherits ::etherpad::params {
   #Merged values provides by user and default values
-  if $padoptions {
     $_real_padoptions = merge($etherpad::params::default_padoptions, $etherpad::padoptions)
-  } else {
-    $_real_padoptions = $etherpad::params::default_padoptions
-  }
 
   if $manage_user {
     contain '::etherpad::user'
