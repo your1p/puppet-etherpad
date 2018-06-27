@@ -111,7 +111,7 @@ describe 'etherpad' do
           let(:params) do
             {
               'padoptions' => {
-                'nocolors' => 'true',
+                'noColors' => 'true',
                 'lang'     => 'fr'
               }
 
