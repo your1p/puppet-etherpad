@@ -61,7 +61,25 @@ class etherpad (
   Optional[Integer] $logconfig_file_max_log_size = undef,
   Optional[Integer] $logconfig_file_backups      = undef,
   Optional[String] $logconfig_file_category      = undef,
+
+  # Padoptions
+  Etherpad::Padoptions $padoptions = {},
 ) {
+  $default_padoptions = {
+    noColors         => false,
+    showControls     => true,
+    showChat         => true,
+    showLineNumbers  => true,
+    useMonospaceFont => false,
+    userName         => false,
+    userColor        => false,
+    rtl              => false,
+    alwaysShowChat   => false,
+    chatAndUsers     => false,
+    lang             => 'en-gb',
+  }
+  #Merged values provides by user and default values
+  $_real_padoptions = merge($default_padoptions, $padoptions)
 
   if $manage_user {
     contain '::etherpad::user'

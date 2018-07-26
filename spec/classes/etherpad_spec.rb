@@ -107,6 +107,36 @@ describe 'etherpad' do
           it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"before": "li\[data-key='showTimeSlider'\]"$}) }
         end
 
+        context 'etherpad class with users pad options set' do
+          let(:params) do
+            {
+              'padoptions' => {
+                'noColors' => true,
+                'lang'     => 'fr'
+              }
+
+            }
+          end
+
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"padOptions\":}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"noColors\": true,}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"lang\": \"fr\"}) }
+        end
+
+        context 'etherpad class with bad users pad options set' do
+          let(:params) do
+            {
+              'padoptions' => {
+                'nocolor'  => 'true',
+                'Lang'     => 'fr'
+              }
+
+            }
+          end
+
+          it { is_expected.to compile.and_raise_error(%r{Error while evaluating a Resource Statement}) }
+        end
+
         context 'etherpad class with all parameters set and ssl enabled' do
           let(:params) do
             {
@@ -273,6 +303,9 @@ describe 'etherpad' do
           it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_file('/var/log/etherpad.log') }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"padOptions\":}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"noColors\": false,\n }) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"lang\": \"en-gb\"}) }
         end
       end
     end

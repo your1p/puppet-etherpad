@@ -394,6 +394,14 @@ Configure users in settings.json. If both 'users' and 'ldapauth' are set only th
 |-----|--------|
 |Optional[Hash]|`undef`|
 
+#### padoptions
+
+Configure pad options in settings.json.
+
+|Type |Default |
+|-----|--------|
+|Struct|`noColors => false`, `showControls => true`, `showChat => true`, `showLineNumbers => true`, `useMonospaceFont => false`, `userName => false`, `userColor => false`, `rtl => false`, `alwaysShowChat => false`, `chatAndUsers => false`, `lang => en-gb`|
+
 ## Limitations
 
 Currently, only upstart and systemd are supported as Service
