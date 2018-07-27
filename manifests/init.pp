@@ -64,6 +64,9 @@ class etherpad (
 
   # Padoptions
   Etherpad::Padoptions $padoptions = {},
+
+  # Plugins
+  Etherpad::Plugins $plugin_name = {},
 ) {
   $default_padoptions = {
     noColors         => false,
@@ -80,6 +83,31 @@ class etherpad (
   }
   #Merged values provides by user and default values
   $_real_padoptions = merge($default_padoptions, $padoptions)
+
+  $plugins_list = {
+    ep_button_link           => true,
+    ep_desktop_notifications => false,
+    ep_ldapauth              => true,
+    ep_align                 => false,
+  }
+  #Install choosing pluginsi
+  $plugins_list.each |String $_pname, Boolean $_penable| {
+    if $_penable == true {
+    Class["etherpad::plugins::${_pname}"]
+    } elsif $_penable == false {
+      #Class["etherpad::plugins::common{$_pname:}"]
+      #package { '${_pname}':
+      #  ensure   => 'installed',
+      #  provider => 'npm',
+      #}
+      nodejs::npm { "${_pname}":
+        ensure   => 'present',
+        target   => "${etherpad::root_dir}/node_modules/ep_etherpad-lite/node_modules",
+      }
+    } else {
+      fail("The plugin ${_pname} is not supported yet, please check the plugins list")
+    }
+  }
 
   if $manage_user {
     contain '::etherpad::user'
