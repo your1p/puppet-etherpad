@@ -114,14 +114,15 @@ class etherpad (
   #Install choosing plugins
   $plugins_list.each |String $_pname, Boolean $_penable| {
   if $_penable == true {
-    contain "::etherpad::plugins::${_pname}"
-    Class["::etherpad::plugins::${_pname}"]
-    } elsif $_penable == false {
-      contain "::etherpad::plugins::common"
-      Class["::etherpad::plugins::common"]
-    } else {
-      fail("The plugin ${_pname} is not supported yet, please check the plugins list")
+    nodejs::npm { "$_pname" :
+      ensure => 'present',
+      target => "${etherpad::root_dir}/node_modules/",
     }
+  } elsif $_penable == false {
+    etherpad::plugins::common
+  } else {
+    fail("The plugin ${_pname} is not supported yet, please check the plugins list")
+  } notice("$_pname")
   }
 
   if $manage_user {
