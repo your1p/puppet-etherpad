@@ -118,8 +118,15 @@ class etherpad (
       ensure => 'present',
       target => "${etherpad::root_dir}/node_modules/",
     }
+    concat::fragment{"$_pname":
+      target  => "${etherpad::root_dir}/settings.json",
+      content => epp("etherpad/plugins/${_pname}.epp"),
+    }
   } elsif $_penable == false {
-    etherpad::plugins::common
+    nodejs::npm { "$_pname" :
+      ensure => 'present',
+      target => "${etherpad::root_dir}/node_modules/",
+    }
   } else {
     fail("The plugin ${_pname} is not supported yet, please check the plugins list")
   } notice("$_pname")
