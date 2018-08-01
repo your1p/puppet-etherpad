@@ -1,0 +1,3 @@
+// LDAP Authentication
+"users": {
+  "ldapauth": <%= to_json_pretty($etherpad::_real_ldapauth_options) %>,

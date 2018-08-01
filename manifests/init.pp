@@ -38,14 +38,14 @@ class etherpad (
   Boolean $minify  = true,
 
   # Config
-  Optional[Hash] $ldapauth        = undef,
-  Optional[Hash] $button_link     = undef,
-  Boolean $require_session        = false,
-  Boolean $edit_only              = false,
-  Boolean $require_authentication = false,
-  Boolean $require_authorization  = false,
-  Optional[String]  $pad_title    = undef,
-  String $default_pad_text        = 'Welcome to etherpad!',
+  Etherpad::Ldapauth $ldapauth      = {},
+  Etherpad::Buttonlink $button_link = {},
+  Boolean $require_session          = false,
+  Boolean $edit_only                = false,
+  Boolean $require_authentication   = false,
+  Boolean $require_authorization    = false,
+  Optional[String]  $pad_title      = undef,
+  String $default_pad_text          = 'Welcome to etherpad!',
 
   # Users
   Optional[Hash] $users = undef,
@@ -66,7 +66,7 @@ class etherpad (
   Etherpad::Padoptions $padoptions = {},
 
   # Plugins
-  Etherpad::Plugins $plugin_name = {},
+  Hash[Pattern['ep_*'], Boolean] $plugins_list = {},
 ) {
   $default_padoptions = {
     noColors         => false,
@@ -84,26 +84,41 @@ class etherpad (
   #Merged values provides by user and default values
   $_real_padoptions = merge($default_padoptions, $padoptions)
 
-  $plugins_list = {
-    ep_button_link           => true,
-    ep_desktop_notifications => false,
-    ep_ldapauth              => true,
-    ep_align                 => false,
+  $default_button_link_options = {
+    text    => 'Hello world',
+    link    => 'http://whatever.com',
+    classes => 'grouped-left',
+    before  => "li[data-key='showTimeSlider']",
+    after   => "li[data-key='showTimeSlider']",
   }
-  #Install choosing pluginsi
+  #Merged values provides by user and default values
+  $_real_button_link_options = merge($default_button_link_options, $button_link)
+
+  $default_ldapauth_options = {
+    url                  => 'ldaps://ldap.example.com',
+    accountBase          => 'ou=Users,dc=example,dc=com',
+    accountPattern       => '(&(objectClass=*)(uid={{username}}))',
+    displayNameAttribute => 'cn',
+    searchDN             => 'uid=searchuser,dc=example,dc=com',
+    searchPWD            => 'supersecretpassword',
+    groupSearchBase      => 'ou=Groups,dc=example,dc=com',
+    groupAttribute       => 'member',
+    groupAttributeIsDN   => true,
+    searchScope          => 'sub',
+    groupSearch          => '(&(cn=admin)(objectClass=groupOfNames))',
+    anonymousReadonly    => false,
+  }
+  #Merged values provides by user and default values
+  $_real_ldapauth_options = merge($default_ldapauth_options, $ldapauth)
+
+  #Install choosing plugins
   $plugins_list.each |String $_pname, Boolean $_penable| {
-    if $_penable == true {
-    Class["etherpad::plugins::${_pname}"]
+  if $_penable == true {
+    contain "::etherpad::plugins::${_pname}"
+    Class["::etherpad::plugins::${_pname}"]
     } elsif $_penable == false {
-      #Class["etherpad::plugins::common{$_pname:}"]
-      #package { '${_pname}':
-      #  ensure   => 'installed',
-      #  provider => 'npm',
-      #}
-      nodejs::npm { "${_pname}":
-        ensure   => 'present',
-        target   => "${etherpad::root_dir}/node_modules/ep_etherpad-lite/node_modules",
-      }
+      contain "::etherpad::plugins::common"
+      Class["::etherpad::plugins::common"]
     } else {
       fail("The plugin ${_pname} is not supported yet, please check the plugins list")
     }
