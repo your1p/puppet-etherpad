@@ -84,17 +84,10 @@ class etherpad (
   #Merged values provides by user and default values
   $_real_padoptions = merge($default_padoptions, $padoptions)
 
-  #Merged values provides by user and default values
-  contain '::etherpad::plugins::ep_button_link'
-  $_real_button_link_options = merge($etherpad::plugins::ep_button_link::default_button_link_options, $button_link)
-
-  #Merged values provides by user and default values
-  contain '::etherpad::plugins::ep_ldapauth'
-  $_real_ldapauth_options = merge($etherpad::plugins::ep_ldapauth::default_ldapauth_options, $ldapauth)
-
   #Install choosing plugins
   $plugins_list.each |String $_pname, Boolean $_penable| {
   if $_penable == true {
+    contain "etherpad::plugins::${_pname}"
     Class["etherpad::plugins::${_pname}"]
   } elsif $_penable == false {
     etherpad::plugins::common { "$_pname" :

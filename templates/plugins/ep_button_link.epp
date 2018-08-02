@@ -1,2 +1,2 @@
 // Button Link
-"ep_button_link": <%= to_json_pretty($etherpad::_real_button_link_options) %>,
+"ep_button_link": <%= to_json_pretty($etherpad::plugins::ep_button_link::_real_button_link_options) %>,
