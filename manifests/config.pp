@@ -20,4 +20,9 @@ class etherpad::config {
     content => epp("${module_name}/settings.json.epp"),
     order   => '01',
   }
+  concat::fragment{ 'end of settings.json.epp':
+    target  => "${::etherpad::root_dir}/settings.json",
+    content => '}',
+    order   => '1000',
+  }
 }

@@ -1,2 +1,2 @@
-// Plugin Button Link
+// Button Link
 "ep_button_link": <%= to_json_pretty($etherpad::_real_button_link_options) %>,

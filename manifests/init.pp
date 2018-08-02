@@ -84,51 +84,23 @@ class etherpad (
   #Merged values provides by user and default values
   $_real_padoptions = merge($default_padoptions, $padoptions)
 
-  $default_button_link_options = {
-    text    => 'Hello world',
-    link    => 'http://whatever.com',
-    classes => 'grouped-left',
-    before  => "li[data-key='showTimeSlider']",
-    after   => "li[data-key='showTimeSlider']",
-  }
   #Merged values provides by user and default values
-  $_real_button_link_options = merge($default_button_link_options, $button_link)
+  contain '::etherpad::plugins::ep_button_link'
+  $_real_button_link_options = merge($etherpad::plugins::ep_button_link::default_button_link_options, $button_link)
 
-  $default_ldapauth_options = {
-    url                  => 'ldaps://ldap.example.com',
-    accountBase          => 'ou=Users,dc=example,dc=com',
-    accountPattern       => '(&(objectClass=*)(uid={{username}}))',
-    displayNameAttribute => 'cn',
-    searchDN             => 'uid=searchuser,dc=example,dc=com',
-    searchPWD            => 'supersecretpassword',
-    groupSearchBase      => 'ou=Groups,dc=example,dc=com',
-    groupAttribute       => 'member',
-    groupAttributeIsDN   => true,
-    searchScope          => 'sub',
-    groupSearch          => '(&(cn=admin)(objectClass=groupOfNames))',
-    anonymousReadonly    => false,
-  }
   #Merged values provides by user and default values
-  $_real_ldapauth_options = merge($default_ldapauth_options, $ldapauth)
+  contain '::etherpad::plugins::ep_ldapauth'
+  $_real_ldapauth_options = merge($etherpad::plugins::ep_ldapauth::default_ldapauth_options, $ldapauth)
 
   #Install choosing plugins
   $plugins_list.each |String $_pname, Boolean $_penable| {
   if $_penable == true {
-    nodejs::npm { "$_pname" :
-      ensure => 'present',
-      target => "${etherpad::root_dir}/node_modules/",
-    }
-    concat::fragment{"$_pname":
-      target  => "${etherpad::root_dir}/settings.json",
-      content => epp("etherpad/plugins/${_pname}.epp"),
-    }
+    Class["etherpad::plugins::${_pname}"]
   } elsif $_penable == false {
-    nodejs::npm { "$_pname" :
-      ensure => 'present',
-      target => "${etherpad::root_dir}/node_modules/",
+    etherpad::plugins::common { "$_pname" :
     }
   } else {
-    fail("The plugin ${_pname} is not supported yet, please check the plugins list")
+    fail("The plugin $_pname is not supported yet. Please, check the plugins list before install a complex plugin")
   } notice("$_pname")
   }
 
