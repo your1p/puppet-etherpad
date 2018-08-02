@@ -14,11 +14,10 @@ class etherpad::plugins::ep_ldapauth {
     anonymousReadonly    => false,
   }
   etherpad::plugins::common { 'ep_ldapauth' :
-    plugin_name => 'ep_ldapauth',
   }
   concat::fragment { "ep_ldapauth":
     target  => "${::etherpad::root_dir}/settings.json",
-    content => "${etherpad::root_dir}/node_modules/",
+    content => epp("${module_name}/plugins/ep_ldapauth.epp"),
     order   => '03',
   }
 }

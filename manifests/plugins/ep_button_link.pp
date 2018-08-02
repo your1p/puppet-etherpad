@@ -7,11 +7,10 @@ class etherpad::plugins::ep_button_link {
     after   => "li[data-key='showTimeSlider']",
   }
   etherpad::plugins::common { 'ep_button_link' :
-    plugin_name => 'ep_button_link',
   }
   concat::fragment { "ep_button_link":
     target  => "${::etherpad::root_dir}/settings.json",
-    content => "${etherpad::root_dir}/node_modules/",
+    content => epp("${module_name}/plugins/ep_button_link.epp"),
     order   => '02',
   }
 }
