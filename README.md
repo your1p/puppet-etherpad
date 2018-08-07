@@ -311,24 +311,61 @@ see below.
 |-----|--------|
 |Boolean|`false`|
 
+#### plugins_list
+
+Manage simple and advanced plugin of etherpad.
+You can install a advanced plugin with `true` value, a simple plugin `undef` and unsintall it with `false`.
+You MUST use default plugin's names. They are findable here : https://static.etherpad.org/plugins.html
+
+|Type |Default |
+|-----|--------|
+|Hash[Pattern['ep_*'], Variant[Boolean, Undef]]|{}|
+
+Simple plugins : Don't need to add configuration lines in `settings.json`
+Advanced plugins : Need to add configuration lines in `settings.json`.
+
+|Plugin's name |Supported |
+|--------------|----------|
+|`ep_button_link`|YES|
+|`ep_ldapauth`|YES|
+|All simple plugins|YES|
+
+Exemple :
+
+```puppet
+class { ::etherpad:
+  ensure            => 'present',
+  database_type     => 'mysql',
+  database_name     => 'etherpad',
+  database_user     => 'etherpad',
+  users             => {
+    admin => {
+      password => 's3cr3t',
+      is_admin => true,
+    },
+    user  => {
+      password => 'secret',
+      is_admin => false,
+    },
+  },
+  plugins_list => {
+    ep_button_link => true,
+    ep_align       => undef,
+    ep_ldapauth    => false,
+  },
+}
+```
+In this case `ep_button_link` will be installed with the configuration in `settings.json`, `ep_align` will be just installed and `ep_ldapauth` will be uninstalled.
+
 #### button_link
 
-The setting should be used to set ep_button_link module params as described at
-https://github.com/JohnMcLear/ep_button_link
+Manage the configuration of `ep_button_link`.
 
 |Type |Default |
 |-----|--------|
-|Optional[Hash]|`undef`|
+|Type |        |
 
 #### ldapauth
-
-The setting should be used to set ep_ldapauth module params as described in
-https://github.com/tykeal/ep_ldapauth
-If both 'users' and 'ldapauth' are set only the latter one will be put into settings.json.
-
-|Type |Default |
-|-----|--------|
-|Optional[Hash]|`undef`|
 
 #### pad_title
 
