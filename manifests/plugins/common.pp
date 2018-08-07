@@ -8,9 +8,9 @@ define etherpad::plugins::common (
   ->file { $plugin_name :
     path    => "${etherpad::root_dir}/node_modules/${plugin_name}",
     ensure  => directory,
-#   recurse => true,
     owner   => "$etherpad::user",
     group   => "$etherpad::group",
-   }
-   ->Service[$etherpad::service_name]
+    notify  => Service["$etherpad::service_name"],
+  }
+  ->Service[$etherpad::service_name]
 }

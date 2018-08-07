@@ -66,7 +66,7 @@ class etherpad (
   Etherpad::Padoptions $padoptions = {},
 
   # Plugins
-  Hash[Pattern['ep_*'], Boolean] $plugins_list = {},
+  Hash[Pattern['ep_*'], Variant[Boolean, Undef]] $plugins_list = {},
 ) {
   $default_padoptions = {
     noColors         => false,
@@ -85,17 +85,21 @@ class etherpad (
   $_real_padoptions = merge($default_padoptions, $padoptions)
 
   #Install choosing plugins
-  $plugins_list.each |String $_pname, Boolean $_penable| {
+  $plugins_list.each |String $_pname, Variant[Boolean, Undef] $_penable| {
   if $_penable == true {
     contain "etherpad::plugins::${_pname}"
     Class["etherpad::plugins::${_pname}"]
-  } elsif $_penable == false {
+  } elsif $_penable == undef {
     etherpad::plugins::common { "$_pname" :
     }
-  } else {
-    fail("The plugin $_pname is not supported yet. Please, check the plugins list before install a complex plugin")
+  } elsif $_penable == false {
+    etherpad::plugins::ucommon { "$_pname" :
     }
+  } else {
+    fail("The plugin $_pname is not supported yet, please chek the plugin list.")
   }
+  ->Service[$etherpad::service_name]
+}
 
   if $manage_user {
     contain '::etherpad::user'
