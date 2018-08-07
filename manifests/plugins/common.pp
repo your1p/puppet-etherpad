@@ -12,4 +12,5 @@ define etherpad::plugins::common (
     owner   => "$etherpad::user",
     group   => "$etherpad::group",
    }
+   ->Service[$etherpad::service_name]
 }
