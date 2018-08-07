@@ -12,6 +12,6 @@ class etherpad::plugins::ep_button_link {
   concat::fragment { "ep_button_link":
     target  => "${::etherpad::root_dir}/settings.json",
     content => epp("${module_name}/plugins/ep_button_link.epp"),
-    order   => '11',
+    order   => '10',
   }
 }

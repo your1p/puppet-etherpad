@@ -19,6 +19,6 @@ class etherpad::plugins::ep_ldapauth {
   concat::fragment { "ep_ldapauth":
     target  => "${::etherpad::root_dir}/settings.json",
     content => epp("${module_name}/plugins/ep_ldapauth.epp"),
-    order   => '12',
+    order   => '11',
   }
 }

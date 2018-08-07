@@ -8,21 +8,20 @@ class etherpad::config {
     'absent' => 'absent',
     default  => 'present',
   }
-
   concat {"${::etherpad::root_dir}/settings.json":
-    ensure  => $ensure,
-    owner   => $::etherpad::user,
-    group   => $::etherpad::group,
+    ensure => $ensure,
+    owner  => $::etherpad::user,
+    group  => $::etherpad::group,
+    order  => 'numeric',
   }
-
-  concat::fragment{ 'settings.json.epp':
+  concat::fragment{ 'settings-first.json.epp':
     target  => "${::etherpad::root_dir}/settings.json",
-    content => epp("${module_name}/settings.json.epp"),
+    content => epp("${module_name}/settings.json-fp.epp"),
     order   => '01',
   }
-  concat::fragment{ 'end of settings.json.epp':
+  concat::fragment{ 'settings-second.json.epp':
     target  => "${::etherpad::root_dir}/settings.json",
-    content => '}',
+    content => epp("${module_name}/settings.json-sp.epp"),
     order   => '1000',
   }
 }
