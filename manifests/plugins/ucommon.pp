@@ -1,9 +1,8 @@
 define etherpad::plugins::ucommon (
   $plugin_name = "$title",
   ) {
-    nodejs::npm { "Uninstall $plugin_name" :
+    nodejs::npm { $plugin_name :
       ensure  => 'absent',
-      package => "$plugin_name" ,
       target  => "${etherpad::root_dir}/node_modules/",
     }
     ->file { $plugin_name :
@@ -13,5 +12,4 @@ define etherpad::plugins::ucommon (
       force   => true,
       notify  => Service["$etherpad::service_name"],
     }
-    ->Service[$etherpad::service_name]
-}
+  }

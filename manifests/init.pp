@@ -98,8 +98,7 @@ class etherpad (
   } else {
     fail("The plugin $_pname is not supported yet, please chek the plugin list.")
   }
-  ->Service[$etherpad::service_name]
-}
+  }
 
   if $manage_user {
     contain '::etherpad::user'
