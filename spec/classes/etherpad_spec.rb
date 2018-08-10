@@ -39,7 +39,6 @@ describe 'etherpad' do
                 'link'   => 'https://example.com/pad-lister',
                 'before' => "li[data-key='showTimeSlider']"
               },
-              # Ssl
               ssl: 'enable',
               ssl_key: '/yourpath/etherpad.key',
               ssl_cert: '/yourpath/etherpad.crt'
@@ -57,6 +56,7 @@ describe 'etherpad' do
       end
     end
   end
+
 
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
@@ -114,7 +114,6 @@ describe 'etherpad' do
                 'noColors' => true,
                 'lang'     => 'fr'
               }
-
             }
           end
 
@@ -130,7 +129,6 @@ describe 'etherpad' do
                 'nocolor'  => 'true',
                 'Lang'     => 'fr'
               }
-
             }
           end
 

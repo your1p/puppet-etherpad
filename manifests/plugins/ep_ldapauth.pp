@@ -16,7 +16,7 @@ class etherpad::plugins::ep_ldapauth {
     anonymousReadonly    => false,
   }
   $_real_ldapauth_options = merge($default_ldapauth_options, $etherpad::ldapauth)
-  concat::fragment { "ep_ldapauth":
+  concat::fragment { 'ep_ldapauth':
     target  => "${::etherpad::root_dir}/settings.json",
     content => epp("${module_name}/plugins/ep_ldapauth.epp"),
     order   => '11',

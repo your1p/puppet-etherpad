@@ -90,13 +90,13 @@ class etherpad (
     contain "etherpad::plugins::${_pname}"
     Class["etherpad::plugins::${_pname}"]
   } elsif $_penable == undef {
-    etherpad::plugins::common { "$_pname" :
+    etherpad::plugins::common { $_pname :
     }
   } elsif $_penable == false {
-    etherpad::plugins::ucommon { "$_pname" :
+    etherpad::plugins::ucommon { $_pname :
     }
   } else {
-    fail("The plugin $_pname is not supported yet, please chek the plugin list.")
+    fail("The plugin ${_pname} is not supported yet, please chek the plugin list.")
   }
   }
 

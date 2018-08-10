@@ -9,7 +9,7 @@ class etherpad::plugins::ep_button_link {
     after   => "li[data-key='showTimeSlider']",
   }
   $_real_button_link_options = merge($default_button_link_options, $etherpad::button_link)
-  concat::fragment { "ep_button_link":
+  concat::fragment { 'ep_button_link':
     target  => "${::etherpad::root_dir}/settings.json",
     content => epp("${module_name}/plugins/ep_button_link.epp"),
     order   => '10',

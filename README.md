@@ -313,22 +313,25 @@ see below.
 
 #### plugins_list
 
-Manage simple and advanced plugin of etherpad.
-You can install a advanced plugin with `true` value, a simple plugin `undef` and unsintall it with `false`.
-You MUST use default plugin's names. They are findable here : https://static.etherpad.org/plugins.html
+Manage simple and advanced etherpad's plugins.
 
 |Type |Default |
 |-----|--------|
 |Hash[Pattern['ep_*'], Variant[Boolean, Undef]]|{}|
 
+You can install an advanced plugin with `true` value, a simple plugin with `undef` and unsintall it with `false`.
+You MUST use default plugin's names. They are findable here : https://static.etherpad.org/plugins.html
+
 Simple plugins : Don't need to add configuration lines in `settings.json`
 Advanced plugins : Need to add configuration lines in `settings.json`.
 
-|Plugin's name |Supported |
+|Plugin name |Supported |
 |--------------|----------|
 |`ep_button_link`|YES|
 |`ep_ldapauth`|YES|
 |All simple plugins|YES|
+
+If the plugin is not supported, it will be installed but whitout configuration.
 
 Exemple :
 
@@ -338,6 +341,7 @@ class { ::etherpad:
   database_type     => 'mysql',
   database_name     => 'etherpad',
   database_user     => 'etherpad',
+  database_password => '37h3rp4d',
   users             => {
     admin => {
       password => 's3cr3t',
@@ -357,15 +361,21 @@ class { ::etherpad:
 ```
 In this case `ep_button_link` will be installed with the configuration in `settings.json`, `ep_align` will be just installed and `ep_ldapauth` will be uninstalled.
 
-#### button_link
 
+#### button_link
 Manage the configuration of `ep_button_link`.
 
 |Type |Default |
 |-----|--------|
-|Type |        |
+|Type |'https://www.npmjs.com/package/ep_button_link' |
 
 #### ldapauth
+
+Manage the configuration of `ep_ldpauth`.
+
+|Type |Default |
+|-----|--------|
+|Type |'https://www.npmjs.com/package/ep_ldapauth' |
 
 #### pad_title
 
