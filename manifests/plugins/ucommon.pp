@@ -1,6 +1,7 @@
 define etherpad::plugins::ucommon (
   $plugin_name = $title,
   ) {
+    include nodejs
     nodejs::npm { $plugin_name :
       ensure => 'absent',
       target => "${etherpad::root_dir}/node_modules/",

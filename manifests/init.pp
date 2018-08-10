@@ -66,7 +66,7 @@ class etherpad (
   Etherpad::Padoptions $padoptions = {},
 
   # Plugins
-  Hash[Pattern['ep_*'], Variant[Boolean, Undef]] $plugins_list = {},
+  Hash[Pattern['ep_*'], Optional[Boolean]] $plugins_list = {},
 ) {
   $default_padoptions = {
     noColors         => false,
@@ -85,9 +85,8 @@ class etherpad (
   $_real_padoptions = merge($default_padoptions, $padoptions)
 
   #Install choosing plugins
-  $plugins_list.each |String $_pname, Variant[Boolean, Undef] $_penable| {
+  $plugins_list.each |$_pname, $_penable| {
   if $_penable == true {
-    contain "etherpad::plugins::${_pname}"
     Class["etherpad::plugins::${_pname}"]
   } elsif $_penable == undef {
     etherpad::plugins::common { $_pname :

@@ -1,6 +1,7 @@
 define etherpad::plugins::common (
   $plugin_name = $title,
   ) {
+    include nodejs
     nodejs::npm { $plugin_name :
       ensure => 'present',
       target => "${etherpad::root_dir}/",
