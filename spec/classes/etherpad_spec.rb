@@ -57,6 +57,42 @@ describe 'etherpad' do
     end
   end
 
+  context 'supported operating systems' do
+    on_supported_os.each do |os, facts|
+      context "on #{os}" do
+        let(:facts) do
+          facts
+        end
+
+        context 'etherpad class with plugins_list enabled' do
+          let(:params) do
+            {
+              plugins_list: {
+                'ep_ldapauth'    => true,
+                'ep_button_link' => :undef,
+                'ep_align'       => false
+              },
+              ldapauth: {
+                'url'                => 'ldap://ldap.foobar.com',
+                'accountBase'        => 'o=staff,o=foo,dc=bar,dc=com',
+                'groupAttributeIsDN' => false
+              }
+            }
+          end
+
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"users": {$|) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"ldapauth": {$|) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"accountBase": "o=staff,o=foo,dc=bar,dc=com",$}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"groupAttributeIsDN": false,$}) }
+          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{test_user}) }
+          it { is_expected.to be_directory('/opt/etherpad/node_modules/ep_ldapauth/') }
+          it { is_expected.to be_directory('/opt/etherpad/node_modules/ep_button_link/') }
+          it { is_expected.not_to be_directory('/opt/etherpad/node_modules/ep_align') }
+        end
+      end
+    end
+  end
 
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
