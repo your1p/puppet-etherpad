@@ -31,33 +31,60 @@ describe 'etherpad' do
           facts
         end
 
-        context 'etherpad class with button_link set and ssl enabled' do
+        context 'etherpad class with plugins_list enabled' do
           let(:params) do
             {
               plugins_list: {
-                'ep_button_link' => true
+                'ep_ldapauth'    => true,
+                'ep_button_link' => :undef,
+                'ep_align'       => false
               },
-              button_link: {
-                'text'   => 'Link Button',
-                'link'   => 'https://example.com/pad-lister',
-                'before' => "li[data-key='showTimeSlider']"
-              },
-              ssl: 'enable',
-              ssl_key: '/yourpath/etherpad.key',
-              ssl_cert: '/yourpath/etherpad.crt'
+              ldapauth: {
+                'url'                => 'ldap://ldap.foobar.com',
+                'accountBase'        => 'o=staff,o=foo,dc=bar,dc=com',
+                'groupAttributeIsDN' => false
+              }
             }
           end
 
-          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"ssl\" :}) }
-          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
-          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
-          it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r|^\s*"ep_button_link": {$|) }
-          it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r{^\s*"text": "Link Button",$}) }
-          it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r{^\s*"link": "https://example\.com/pad-lister",$}) }
-          it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r{^\s*"before": "li\[data-key='showTimeSlider'\]"$}) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r|^\s*"users": {$|) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r|^\s*"ldapauth": {$|) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"accountBase": "o=staff,o=foo,dc=bar,dc=com",$}) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"groupAttributeIsDN": false,$}) }
+          it { is_expected.to contain_concat_fragment('settings-second.json.epp').without_content(%r{test_user}) }
+          it { expect('/opt/etherpad/node_modules/ep_ldapauth').to be_directory }
+          it { is_expected.to be_directory('/opt/etherpad/node_modules/ep_button_link') }
+          it { is_expected.not_to be_directory('/opt/etherpad/node_modules/ep_align') }
         end
       end
     end
+  end
+
+  context 'etherpad class with button_link set and ssl enabled' do
+    let(:params) do
+      {
+        plugins_list: {
+          'ep_button_link' => true
+        },
+        button_link: {
+          'text'   => 'Link Button',
+          'link'   => 'https://example.com/pad-lister',
+          'before' => "li[data-key='showTimeSlider']"
+        },
+        ssl: 'enable',
+        ssl_key: '/yourpath/etherpad.key',
+        ssl_cert: '/yourpath/etherpad.crt'
+      }
+    end
+
+    it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"ssl\" :}) }
+    it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
+    it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
+    it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r|^\s*"ep_button_link": {$|) }
+    it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r{^\s*"text": "Link Button",$}) }
+    it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r{^\s*"link": "https://example\.com/pad-lister",$}) }
+    it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r{^\s*"before": "li\[data-key='showTimeSlider'\]"$}) }
   end
 
   context 'supported operating systems' do
