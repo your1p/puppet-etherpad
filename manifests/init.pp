@@ -85,6 +85,13 @@ class etherpad (
   $_real_padoptions = merge($default_padoptions, $padoptions)
 
   #Install choosing plugins
+
+
+#  case $plugins_list["_pname"]["_penable"] {
+#    true:  { include Class["etherpad::plugins::{_pname}"] }
+#    false: { include etherpad::plugins::ucommon { _pname :} }
+#    undef: { include etherpad::plugins::common { _pname :} }
+#  }
   $plugins_list.each |$_pname, $_penable| {
   if $_penable == true {
     Class["etherpad::plugins::${_pname}"]
