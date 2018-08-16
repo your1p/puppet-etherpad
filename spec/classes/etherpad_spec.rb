@@ -41,7 +41,7 @@ describe 'etherpad' do
                 'text'   => 'Link Button',
                 'link'   => 'https://example.com/pad-lister',
                 'before' => "li[data-key='showTimeSlider']"
-},
+              },
               ssl: 'enable',
               ssl_key: '/yourpath/etherpad.key',
               ssl_cert: '/yourpath/etherpad.crt'
@@ -100,7 +100,7 @@ describe 'etherpad' do
             {
               plugins_list: {
                 'ep_button_link' => true
-              },
+              }
             }
           end
 
