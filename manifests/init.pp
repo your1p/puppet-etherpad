@@ -87,6 +87,7 @@ class etherpad (
   #Install choosing plugins
   $plugins_list.each |$_pname, $_penable| {
   if $_penable == true {
+    contain "::etherpad::plugins::${_pname}"
     Class["etherpad::plugins::${_pname}"]
   } elsif $_penable == undef {
     etherpad::plugins::common { $_pname :
