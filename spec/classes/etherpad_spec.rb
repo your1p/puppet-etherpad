@@ -201,7 +201,7 @@ describe 'etherpad' do
               ip: '*',
               port: 9001,
               trust_proxy: false,
-              
+
               # Performance
               max_age: 21_600,
               minify: true,
