@@ -60,14 +60,14 @@ describe 'etherpad' do
       end
     end
   end
-  
+
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
         let(:facts) do
           facts
         end
-        
+
         context 'etherpad class with button_link set and ssl enabled' do
           let(:params) do
             {
@@ -84,7 +84,7 @@ describe 'etherpad' do
               ssl_cert: '/yourpath/etherpad.crt'
             }
           end
-          
+
           it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"ssl\" :}) }
           it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
           it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
