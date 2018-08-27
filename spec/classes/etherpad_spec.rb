@@ -103,6 +103,48 @@ describe 'etherpad' do
           facts
         end
 
+        context 'etherpad class with ep_ldapauth and ep_mypads set' do
+          let(:params) do
+            {
+              plugins_list: {
+                'ep_ldapauth' => true,
+                'ep_mypads' => true
+              },
+              ldapauth: {
+                'url'                => 'ldap://ldap.foobar.com',
+                'accountBase'        => 'o=staff,o=foo,dc=bar,dc=com',
+                'groupAttributeIsDN' => false
+              },
+            }
+          end
+
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r|^\s*"users": {$|) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r|^\s*"ldapauth": {$|) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"accountBase": "o=staff,o=foo,dc=bar,dc=com",$}) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"groupAttributeIsDN": false,$}) }
+          it { is_expected.to contain_concat_fragment('ep_mypads').with_content(%r|^\s*"users": {$|) }
+          it { is_expected.to contain_concat_fragment('ep_mypads').with_content(%r|^\s*"ep_mypads": {$|) }
+          it { is_expected.to contain_concat_fragment('ep_mypads').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
+          it { is_expected.to contain_concat_fragment('ep_mypads').with_content(%r{^\s*"searchFilter": "o=staff,o=foo,dc=bar,dc=com",$}) }
+          it { is_expected.to contain_concat_fragment('settings-second.json.epp').without_content(%r{test_user}) }
+          it { is_expected.to contain_file('ep_ldapauth') }
+          it { is_expected.to contain_file('ldapauth-fork') }
+          it { is_expected.to contain_file('ep_mypads') }
+  
+        end
+      end
+    end
+  end
+
+
+  context 'supported operating systems' do
+    on_supported_os.each do |os, facts|
+      context "on #{os}" do
+        let(:facts) do
+          facts
+        end
+
         context 'etherpad class with ldapauth set' do
           let(:params) do
             {

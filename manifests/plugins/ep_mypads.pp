@@ -6,15 +6,15 @@ class etherpad::plugins::ep_mypads {
     bindDN                 => $etherpad::plugins::ep_ldapauth::_real_ldapauth_options[searchDN],
     bindCredentials        => $etherpad::plugins::ep_ldapauth::_real_ldapauth_options[searchPWD],
     searchBase             => $etherpad::plugins::ep_ldapauth::_real_ldapauth_options[groupSearchBase],
-    searchFilter           => $etherpad::plugins::ep_ldapauth::_real_ldapauth_options[searchFilter],
+    searchFilter           => $etherpad::plugins::ep_ldapauth::_real_ldapauth_options[accountBase],
     tlsOptions             => {
         rejectUnauthorized => false
     },
     properties    =>  {
-        login     => "uid",
-        email     => "mail",
-        firstname => "givenName",
-        lastname  => "sn"
+        login     => 'uid',
+        email     => 'mail',
+        firstname => 'givenName',
+        lastname  => 'sn'
     },
     users        => {
       admin      => {
@@ -22,7 +22,7 @@ class etherpad::plugins::ep_mypads {
         is_admin => true
       }
     },
-    defaultLang => "fr"
+    defaultLang => 'fr'
   }
 
   nodejs::npm { ldapauth-fork :
