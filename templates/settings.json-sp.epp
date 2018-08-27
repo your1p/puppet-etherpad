@@ -1,4 +1,4 @@
-<%- if $etherpad::ldapauth =~ Hash[String, Variant[String,Boolean], 1] { -%>
+<%- if $etherpad::ldapauth { -%>
 /* Users for basic authentication. is_admin = true gives access to /admin.
    If you do not uncomment this, /admin will not be available! */
 <%- } elsif $etherpad::users { -%>

@@ -1,0 +1,3 @@
+// Mypads
+"ep_mypads": {
+"ldap" : <%= to_json_pretty($etherpad::plugins::ep_mypads::_real_mypads_options) %> },

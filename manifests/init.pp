@@ -40,6 +40,7 @@ class etherpad (
   # Config
   Etherpad::Ldapauth $ldapauth      = {},
   Etherpad::Buttonlink $button_link = {},
+  Etherpad::Mypads $mypads          = {},
   Boolean $require_session          = false,
   Boolean $edit_only                = false,
   Boolean $require_authentication   = false,
