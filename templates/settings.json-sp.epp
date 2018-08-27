@@ -1,28 +1,27 @@
-<%- if $etherpad::ldapauth =~ Hash[String, Variant[String,Boolean], 1] { -%>
-/* Users for basic authentication. is_admin = true gives access to /admin.
-   If you do not uncomment this, /admin will not be available! */
-<%- } elsif $etherpad::users { -%>
-"users": {
-  <%- $etherpad::users.each |String $username, Hash $attrs| { -%>
-  "<%= $username -%>": {
-    "password": "<%= $attrs['password'] -%>",
-    "is_admin": "<%= $attrs['is_admin'] -%>"
+  /* Users for basic authentication. is_admin = true gives access to /admin.
+     If you do not uncomment this, /admin will not be available! */
+  <%- if $etherpad::users { -%>
+  "users": {
+    <%- $etherpad::users.each |String $username, Hash $attrs| { -%>
+    "<%= $username -%>": {
+      "password": "<%= $attrs['password'] -%>",
+      "is_admin": "<%= $attrs['is_admin'] -%>"
+    },
+    <%- } -%>
   },
-  <%- } -%>
-},
-<%- } else { -%>
-/*
-"users": {
-  "admin": {
-    "password": "changeme1",
-    "is_admin": true
+  <%- } else { -%>
+  /*
+  "users": {
+    "admin": {
+      "password": "changeme1",
+      "is_admin": true
+    },
+    "user": {
+      "password": "changeme1",
+      "is_admin": false
+    }
   },
-  "user": {
-    "password": "changeme1",
-    "is_admin": false
-  }
-},
-*/
+  */
 <%- } -%>
 
 // restrict socket.io transport methods

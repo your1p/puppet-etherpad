@@ -41,6 +41,7 @@ class etherpad (
   Etherpad::Ldapauth $ldapauth      = {},
   Etherpad::Buttonlink $button_link = {},
   Etherpad::Mypads $mypads          = {},
+  Stdlib::Fqdn $adminpwd            = fqdn_rand_string(8),
   Boolean $require_session          = false,
   Boolean $edit_only                = false,
   Boolean $require_authentication   = false,

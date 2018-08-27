@@ -123,7 +123,6 @@ describe 'etherpad' do
           it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
           it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"accountBase": "o=staff,o=foo,dc=bar,dc=com",$}) }
           it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"groupAttributeIsDN": false,$}) }
-          it { is_expected.to contain_concat_fragment('ep_mypads').with_content(%r|^\s*"users": {$|) }
           it { is_expected.to contain_concat_fragment('ep_mypads').with_content(%r|^\s*"ep_mypads": {$|) }
           it { is_expected.to contain_concat_fragment('ep_mypads').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
           it { is_expected.to contain_concat_fragment('ep_mypads').with_content(%r{^\s*"searchFilter": "o=staff,o=foo,dc=bar,dc=com",$}) }

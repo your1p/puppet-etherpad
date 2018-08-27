@@ -16,18 +16,10 @@ class etherpad::plugins::ep_mypads {
         firstname => 'givenName',
         lastname  => 'sn'
     },
-    users        => {
-      admin      => {
-        password => 'changeme1',
-        is_admin => true
-      }
-    },
     defaultLang => 'fr'
   }
 
-  nodejs::npm { ldapauth-fork :
-    ensure => 'present',
-    target => "${etherpad::root_dir}/"
+  etherpad::plugins::common { ldapauth-fork :
   }
 
   $_real_mypads_options = merge($default_mypads_options, $etherpad::mypads)
