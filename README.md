@@ -63,7 +63,7 @@ note that this will use the local DirtyDB and is not recommended beyond basic te
 For production setups, use:
 
 ```puppet
-class { ::etherpad:
+class { "etherpad":
   ensure            => 'present',
   database_type     => 'mysql',
   database_name     => 'etherpad',
@@ -311,24 +311,78 @@ see below.
 |-----|--------|
 |Boolean|`false`|
 
-#### button_link
+#### plugins_list
 
-The setting should be used to set ep_button_link module params as described at
-https://github.com/JohnMcLear/ep_button_link
+Manage etherpad's plugins.
 
 |Type |Default |
 |-----|--------|
-|Optional[Hash]|`undef`|
+|Hash[Pattern['ep_*'], Variant[Boolean, Undef]]|{}|
+
+Existing two kinds of plugins:
+ * Simple plugins : Supported plugins that does not modify `settings.json`.
+ * Advanced plugins : Supported plugins that accept configuration parameters in `settings.json`.
+
+Keys in `plugins_list` must be default plugins name.
+
+Values in `plugins_list` can be:
+ * `undef`: Install any simple plugins or advanced plugins with its default configuration.
+ * `true` : Install advanced plugins with provided configuration by class attributs. See beelow detailed section about each plugin.
+ * `false`: Uninstall any plugins.
+
+List of all plugins is avalable at https://static.etherpad.org/plugins.html
+
+|Plugin name |Supported |
+|--------------|----------|
+|`ep_button_link`|YES|
+|`ep_ldapauth`|YES|
+|All simple plugins|YES|
+
+If the plugin is not supported, it will be installed but whitout configuration.
+
+Exemple :
+
+```puppet
+class { "etherpad":
+  ensure            => 'present',
+  database_type     => 'mysql',
+  database_name     => 'etherpad',
+  database_user     => 'etherpad',
+  database_password => '37h3rp4d',
+  users             => {
+    admin => {
+      password => 's3cr3t',
+      is_admin => true,
+    },
+    user  => {
+      password => 'secret',
+      is_admin => false,
+    },
+  },
+  plugins_list => {
+    ep_button_link => true,
+    ep_align       => undef,
+    ep_ldapauth    => false,
+  },
+}
+```
+In this case `ep_button_link` will be installed with the configuration in `settings.json`, `ep_align` will be just installed and `ep_ldapauth` will be uninstalled.
+
+#### button_link
+
+Manage the configuration of `ep_button_link`.
+
+|Type |Default |
+|-----|--------|
+|Type |'https://www.npmjs.com/package/ep_button_link' |
 
 #### ldapauth
 
-The setting should be used to set ep_ldapauth module params as described in
-https://github.com/tykeal/ep_ldapauth
-If both 'users' and 'ldapauth' are set only the latter one will be put into settings.json.
+Manage the configuration of `ep_ldapauth`.
 
 |Type |Default |
 |-----|--------|
-|Optional[Hash]|`undef`|
+|Type |'https://www.npmjs.com/package/ep_ldapauth' |
 
 #### pad_title
 

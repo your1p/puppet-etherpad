@@ -8,7 +8,7 @@ User=<%= $etherpad::user %>
 Group=<%= $etherpad::group %>
 
 WorkingDirectory=<%= $etherpad::root_dir %>
-ExecStart=<%= $etherpad::root_dir -%>/bin/run.sh 
+ExecStart=<%= $etherpad::root_dir -%>/bin/run.sh
 
 [Install]
 WantedBy=multi-user.target

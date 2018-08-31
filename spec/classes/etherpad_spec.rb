@@ -12,10 +12,10 @@ describe 'etherpad' do
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_vcsrepo('/opt/etherpad') }
           it { is_expected.to contain_file('/lib/systemd/system/etherpad.service') }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"users": {$|) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{ldapauth}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{ep_button_link}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{\"ssl" :}) }
+          it { is_expected.to contain_concat_fragment('settings-second.json.epp').with_content(%r|^\s*"users": {$|) }
+          it { is_expected.to contain_concat_fragment('settings-second.json.epp').without_content(%r{ldapauth}) }
+          it { is_expected.to contain_concat_fragment('settings-second.json.epp').without_content(%r{ep_button_link}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').without_content(%r{\"ssl" :}) }
           it { is_expected.to contain_service('etherpad') }
           it { is_expected.to contain_user('etherpad') }
           it { is_expected.to contain_group('etherpad') }
@@ -31,28 +31,66 @@ describe 'etherpad' do
           facts
         end
 
+        context 'etherpad class with plugins_list enabled' do
+          let(:params) do
+            {
+              plugins_list: {
+                'ep_ldapauth'    => true,
+                'ep_button_link' => :undef,
+                'ep_align'       => false
+              },
+              ldapauth: {
+                'url'                => 'ldap://ldap.foobar.com',
+                'accountBase'        => 'o=staff,o=foo,dc=bar,dc=com',
+                'groupAttributeIsDN' => false
+              }
+            }
+          end
+
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r|^\s*"users": {$|) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r|^\s*"ldapauth": {$|) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"accountBase": "o=staff,o=foo,dc=bar,dc=com",$}) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"groupAttributeIsDN": false,$}) }
+          it { is_expected.to contain_concat_fragment('settings-second.json.epp').without_content(%r{test_user}) }
+          it { is_expected.to contain_file('ep_ldapauth') }
+          it { is_expected.to contain_file('ep_button_link') }
+          it { is_expected.not_to contain_file('/opt/etherpad/node_modules/ep_align') }
+        end
+      end
+    end
+  end
+
+  context 'supported operating systems' do
+    on_supported_os.each do |os, facts|
+      context "on #{os}" do
+        let(:facts) do
+          facts
+        end
+
         context 'etherpad class with button_link set and ssl enabled' do
           let(:params) do
             {
+              plugins_list: {
+                'ep_button_link' => true
+              },
               button_link: {
                 'text'   => 'Link Button',
                 'link'   => 'https://example.com/pad-lister',
                 'before' => "li[data-key='showTimeSlider']"
               },
-              # Ssl
               ssl: 'enable',
               ssl_key: '/yourpath/etherpad.key',
               ssl_cert: '/yourpath/etherpad.crt'
             }
           end
 
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"ssl\" :}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"ep_button_link": {$|) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"text": "Link Button",$}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"link": "https://example\.com/pad-lister",$}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"before": "li\[data-key='showTimeSlider'\]"$}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"ssl\" :}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
+          it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r/^\s*"ep_button_link": {$/) }
+          it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r{^\s*"text\": \"Link Button\",$}) }
+          it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r{^\s*"link\": \"https://example.com/pad-lister\",$}) }
         end
       end
     end
@@ -68,6 +106,9 @@ describe 'etherpad' do
         context 'etherpad class with ldapauth set' do
           let(:params) do
             {
+              plugins_list: {
+                'ep_ldapauth' => true
+              },
               ldapauth: {
                 'url'                => 'ldap://ldap.foobar.com',
                 'accountBase'        => 'o=staff,o=foo,dc=bar,dc=com',
@@ -82,29 +123,26 @@ describe 'etherpad' do
             }
           end
 
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"users": {$|) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r|^\s*"ldapauth": {$|) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"accountBase": "o=staff,o=foo,dc=bar,dc=com",$}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"groupAttributeIsDN": false,$}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{test_user}) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r|^\s*"users": {$|) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r|^\s*"ldapauth": {$|) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"url": "ldap:\/\/ldap.foobar.com",$}) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"accountBase": "o=staff,o=foo,dc=bar,dc=com",$}) }
+          it { is_expected.to contain_concat_fragment('ep_ldapauth').with_content(%r{^\s*"groupAttributeIsDN": false,$}) }
+          it { is_expected.to contain_concat_fragment('settings-second.json.epp').without_content(%r{test_user}) }
         end
 
         context 'etherpad class with button_link set' do
           let(:params) do
             {
-              button_link: {
-                'text'   => 'Link Button',
-                'link'   => 'http://example.com/pad-lister',
-                'before' => "li[data-key='showTimeSlider']"
+              plugins_list: {
+                'ep_button_link' => true
               }
             }
           end
 
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r/^\s*"ep_button_link": {$/) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"text": "Link Button",$}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"link": "http://example\.com/pad-lister",$}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"before": "li\[data-key='showTimeSlider'\]"$}) }
+          it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r/^\s*"ep_button_link": {$/) }
+          it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r{^\s*"text\": \"Hello world\",$}) }
+          it { is_expected.to contain_concat_fragment('ep_button_link').with_content(%r{^\s*"link\": \"http://example.com\",$}) }
         end
 
         context 'etherpad class with users pad options set' do
@@ -114,13 +152,12 @@ describe 'etherpad' do
                 'noColors' => true,
                 'lang'     => 'fr'
               }
-
             }
           end
 
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"padOptions\":}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"noColors\": true,}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{^\s*"lang\": \"fr\"}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{^\s*"padOptions\":}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{^\s*"noColors\": true,}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{^\s*"lang\": \"fr\"}) }
         end
 
         context 'etherpad class with bad users pad options set' do
@@ -130,7 +167,6 @@ describe 'etherpad' do
                 'nocolor'  => 'true',
                 'Lang'     => 'fr'
               }
-
             }
           end
 
@@ -214,9 +250,9 @@ describe 'etherpad' do
             }
           end
 
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"ssl\" :}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"ssl\" :}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_file('/var/log/etherpad.log') }
         end
@@ -255,6 +291,10 @@ describe 'etherpad' do
               minify: true,
 
               # Config
+              plugins_list: {
+                'ep_button_link' => true,
+                'ep_ldapauth' => true
+              },
               button_link: {
                 'text'   => 'Link Button',
                 'link'   => 'http://example.com/pad-lister',
@@ -294,18 +334,17 @@ describe 'etherpad' do
               logconfig_file_max_log_size: 1024,
               logconfig_file_backups: 3,
               logconfig_file_category: 'etherpad'
-
             }
           end
 
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{\"ssl\" :}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').without_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').without_content(%r{\"ssl\" :}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').without_content(%r{\"key\"  : \"/yourpath/etherpad.key\"}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').without_content(%r{\"cert\" : \"/yourpath/etherpad.crt\"}) }
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_file('/var/log/etherpad.log') }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"padOptions\":}) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"noColors\": false,\n }) }
-          it { is_expected.to contain_file('/opt/etherpad/settings.json').with_content(%r{\"lang\": \"en-gb\"}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"padOptions\":}) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"noColors\": false,\n }) }
+          it { is_expected.to contain_concat_fragment('settings-first.json.epp').with_content(%r{\"lang\": \"en-gb\"}) }
         end
       end
     end

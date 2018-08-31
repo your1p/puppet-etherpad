@@ -38,14 +38,14 @@ class etherpad (
   Boolean $minify  = true,
 
   # Config
-  Optional[Hash] $ldapauth        = undef,
-  Optional[Hash] $button_link     = undef,
-  Boolean $require_session        = false,
-  Boolean $edit_only              = false,
-  Boolean $require_authentication = false,
-  Boolean $require_authorization  = false,
-  Optional[String]  $pad_title    = undef,
-  String $default_pad_text        = 'Welcome to etherpad!',
+  Etherpad::Ldapauth $ldapauth      = {},
+  Etherpad::Buttonlink $button_link = {},
+  Boolean $require_session          = false,
+  Boolean $edit_only                = false,
+  Boolean $require_authentication   = false,
+  Boolean $require_authorization    = false,
+  Optional[String]  $pad_title      = undef,
+  String $default_pad_text          = 'Welcome to etherpad!',
 
   # Users
   Optional[Hash] $users = undef,
@@ -64,6 +64,9 @@ class etherpad (
 
   # Padoptions
   Etherpad::Padoptions $padoptions = {},
+
+  # Plugins
+  Hash[Pattern['ep_*'], Optional[Boolean]] $plugins_list = {},
 ) {
   $default_padoptions = {
     noColors         => false,
@@ -80,6 +83,21 @@ class etherpad (
   }
   #Merged values provides by user and default values
   $_real_padoptions = merge($default_padoptions, $padoptions)
+
+  #Install choosing plugins
+#
+  $plugins_list.each |$_pname, $_penable| {
+    case $_penable {
+      true: { contain "etherpad::plugins::${_pname}"
+      }
+      undef: { etherpad::plugins::common { $_pname :}
+      }
+      false: { etherpad::plugins::ucommon { $_pname :}
+      }
+      default: { fail("The plugin ${_pname} is not supported yet, please chek the plugin list.")
+      }
+    }
+  }
 
   if $manage_user {
     contain '::etherpad::user'
